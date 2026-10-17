@@ -1,0 +1,9 @@
+<view class="brand-header" style="padding-top: {{statusBarHeight}}px; min-height: {{headerHeight}}px;">
+  <view class="brand-copy" style="max-width: {{copyMaxWidth}}px;">
+    <view class="brand-title">胡巴家长们</view>
+    <view class="brand-tagline">和你一起，把每一天变得更好 ♡</view>
+  </view>
+  <image class="brand-mascots" style="right: {{mascotRight}}px;" src="/images/brand/mascot-pair.png" mode="aspectFit" />
+  <view class="spark spark-one">★</view>
+  <view class="spark spark-two">♡</view>
+</view>

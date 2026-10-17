@@ -1,0 +1,25 @@
+{
+  "name": "huba-home-miniprogram",
+  "version": "0.1.0",
+  "private": true,
+  "description": "一个基于微信云开发的双人共享生活空间小程序",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lockhr/huba-home-miniprogram.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check": "node scripts/check.cjs",
+    "check:deployment": "node scripts/check-deployment.cjs",
+    "check:public": "node scripts/check-public.cjs"
+  },
+  "keywords": [
+    "wechat-miniprogram",
+    "cloudbase",
+    "nodejs"
+  ]
+}

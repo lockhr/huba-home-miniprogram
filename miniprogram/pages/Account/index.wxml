@@ -1,0 +1,47 @@
+<wxs module="util" src="../util.wxs" />
+<view class="ux-page page-shell account-page">
+  <page-heading title="胡巴家长们" subtitle="和你一起，把每一天变得更好 ♡" />
+  <view class="content-wrap">
+    <view class="search-card"><text class="search-icon-text">⌕</text><input class="search-input" placeholder="搜索物品" placeholder-class="search-placeholder" bindinput="onSearch" value="{{search}}" /><button wx:if="{{search}}" class="search-clear" bindtap="clearSearch" aria-label="清除搜索" hover-class="ux-pressed">×</button></view>
+    <feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取仓库…" bind:retry="loadData" />
+    <view wx:if="{{loaded}}" class="list-help">左滑条目可使用、星标或删除</view>
+    <view class="collection-note">收集小美好，让生活更可爱 ♡</view>
+    <view class="storage-box"><image class="box-photo" src="{{appearance.storage}}" mode="aspectFill" /><view class="box-shade"></view><view class="box-ribbon">HUBA COLLECTION</view><view class="box-icon">🧰</view><view class="box-copy"><view>两个人的收藏盒</view><text>每一份兑换，都藏着一次被惦记</text></view><view class="box-count"><text>{{unusedItems.length}}</text><text>待使用</text></view><view class="box-count used"><text>{{usedItems.length}}</text><text>回忆</text></view></view>
+
+    <view class="section-block">
+      <view class="section-heading"><view class="heading-left"><text>💝</text><text>我的仓库</text><text class="count-badge">{{unusedItems.length}}</text></view><text class="section-action">›</text></view>
+      <view class="list-card" wx:if="{{unusedItems.length > 0}}">
+        <view class="form-cell" wx:for="{{unusedItems}}" wx:key="_id">
+          <mp-slideview buttons="{{slideButtons}}" data-index="{{index}}" ext-class="huba-actions" icon="{{false}}" disable="{{actionBusy}}" duration="{{220}}" bindbuttontap="slideButtonTapUpper">
+            <view class="list-row" data-index="{{index}}" bindtap="toDetailPageUpper" hover-class="ux-pressed" hover-stay-time="80">
+              <view class="product-thumb storage-thumb thumb-tone-{{index % 3}}"><image wx:if="{{index % 3 === 0}}" src="../../images/brand/mascot-pair.png" mode="aspectFit" /><image wx:elif="{{index % 3 === 1}}" src="../../images/brand/decor-letter.png" mode="aspectFit" /><image wx:else src="../../images/brand/decor-diary.png" mode="aspectFit" /></view>
+              <view class="row-copy"><view class="storage-kicker">🎟️ 胡巴兑换券 · 待使用</view><view class="row-title">{{util.filterStr(item.title, 12)}}</view><view class="row-meta">📅 {{util.cutStr(item.date, 10)}} 收进仓库</view></view>
+              <text class="row-arrow">›</text><text wx:if="{{item.star}}" class="star-mark">★</text>
+            </view>
+          </mp-slideview>
+        </view>
+      </view>
+      <view class="group-empty" wx:if="{{!loading && !loadError && unusedItems.length === 0 && usedItems.length > 0}}">暂时没有未使用的物品，去商城看看吧 ♡</view>
+    </view>
+
+    <view class="section-block">
+      <view class="section-heading"><view class="heading-left"><text>🧾</text><text>使用记录</text><text class="count-badge">{{usedItems.length}}</text></view><text class="section-action">›</text></view>
+      <view class="list-card" wx:if="{{usedItems.length > 0}}">
+        <view class="form-cell" wx:for="{{usedItems}}" wx:key="_id">
+          <mp-slideview buttons="{{slideButtons}}" data-index="{{index}}" ext-class="huba-actions" icon="{{false}}" disable="{{actionBusy}}" duration="{{220}}" bindbuttontap="slideButtonTapLower">
+            <view class="list-row used-row" data-index="{{index}}" bindtap="toDetailPageLower" hover-class="ux-pressed" hover-stay-time="80">
+              <view class="product-thumb storage-thumb memory-thumb"><image src="../../images/brand/decor-calendar.png" mode="aspectFit" /></view>
+              <view class="row-copy"><view class="storage-kicker used-kicker">💗 已使用 · 一份共同回忆</view><view class="row-title">{{util.filterStr(item.title, 12)}}</view><view class="row-meta">📅 {{util.cutStr(item.date, 10)}} 收进仓库</view></view>
+              <text class="row-arrow">›</text><text wx:if="{{item.star}}" class="star-mark">★</text>
+            </view>
+          </mp-slideview>
+        </view>
+      </view>
+      <view class="group-empty" wx:if="{{!loading && !loadError && usedItems.length === 0 && unusedItems.length > 0}}">使用过的物品会保存在这里</view>
+    </view>
+
+    <view class="soft-card empty-card" wx:if="{{!loading && !loadError && unusedItems.length === 0 && usedItems.length === 0}}"><image class="empty-image" src="../../images/brand/empty-storage.png" mode="aspectFit" /><view class="empty-title">{{search ? '没有找到匹配的物品' : '还没有收藏记录哦'}}</view><view class="empty-subtitle">{{search ? '试试更短的关键词，或点搜索框右侧清除' : '去商城挑选一份喜欢的小奖励吧 ♡'}}</view></view>
+  </view>
+</view>
+
+<xiaoba-orb />

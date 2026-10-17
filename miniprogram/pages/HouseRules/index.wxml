@@ -1,0 +1,34 @@
+<view class="ux-page rules-page">
+  <view class="rules-hero">
+    <image src="{{appearance.rules}}" mode="aspectFill" />
+    <view class="rules-hero-shade"></view>
+    <view class="rules-hero-copy">
+      <view class="rules-hero-title">胡巴家规</view>
+      <view class="rules-hero-subtitle">记录你们一起学会的每一件小事 ♡</view>
+    </view>
+  </view>
+
+  <view class="editor-card">
+    <view class="editor-title">写下今天的心得</view>
+    <view class="current-author">以 <text>{{currentUser}}</text> 的名字记录</view>
+    <textarea disabled="{{saving}}" class="rule-input" maxlength="1000" value="{{content}}" bindinput="onContentInput" placeholder="比如：有分歧时先把彼此的话听完……" placeholder-class="rule-placeholder" />
+    <view class="editor-footer"><text>{{content.length}} / 1000</text><button class="save-rule" loading="{{saving}}" disabled="{{saving}}" bindtap="saveRule" hover-class="ux-pressed" hover-stay-time="80">保存心得</button></view>
+  </view>
+
+  <feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取心得…" bind:retry="loadRules" />
+  <view class="journal-heading"><text>我们的心得</text><text class="journal-count">{{rules.length}}</text></view>
+  <view wx:if="{{rules.length}}" class="journal-list">
+    <view wx:for="{{rules}}" wx:key="_id" class="journal-item">
+      <view class="journal-top"><view class="journal-author">{{item.author}}</view><view class="journal-date">{{item.dateText}}</view></view>
+      <view class="journal-content">{{item.content}}</view>
+      <view wx:if="{{item.canDelete}}" class="journal-delete" data-id="{{item._id}}" bindtap="deleteRule" hover-class="ux-pressed" hover-stay-time="80">删除</view>
+    </view>
+  </view>
+  <view wx:elif="{{!loading && !loadError}}" class="empty-journal">
+    <image src="../../images/brand/mascot-pair.png" mode="aspectFit" />
+    <view class="empty-journal-title">第一条家规，等你们一起写下</view>
+    <view class="empty-journal-subtitle">小事被记住，也会变成很珍贵的回忆。</view>
+  </view>
+</view>
+
+<xiaoba-orb />

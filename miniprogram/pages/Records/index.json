@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "胡巴记录册",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#fff8fb"
+}

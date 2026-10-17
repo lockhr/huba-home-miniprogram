@@ -1,0 +1,5 @@
+page { min-height: 100%; background: #fff7fa; }
+.review-entry { box-sizing: border-box; min-height: 100vh; padding: 180rpx 56rpx 80rpx; color: #273a58; background: radial-gradient(circle at 50% 20%, #ffe2ee 0, #fff7fa 42%, #f6f8ff 100%); text-align: center; }
+.review-entry-mark { width: 220rpx; height: 220rpx; }
+.review-entry-title { margin-top: 34rpx; font-family: "Songti SC", "STSong", serif; font-size: 38rpx; font-weight: 700; }
+.review-entry-note { margin-top: 18rpx; color: #71809a; font-size: 24rpx; line-height: 1.7; }

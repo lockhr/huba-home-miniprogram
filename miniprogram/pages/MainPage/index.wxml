@@ -1,0 +1,240 @@
+<view class="ux-page page-shell home-page">
+  <page-heading title="胡巴家长们" subtitle="{{coupleTagline}}" />
+  <view class="content-wrap">
+    <view wx:if="{{previewMode}}" class="preview-banner">
+      <view class="preview-banner-copy">
+        <view class="preview-banner-title">正在浏览示例空间</view>
+        <view class="preview-banner-note">这里只展示虚拟内容，不会读取你的资料，也不会保存操作</view>
+      </view>
+      <button class="preview-banner-action" bindtap="leavePreview" hover-class="ux-pressed" hover-stay-time="80">创建或加入</button>
+    </view>
+
+    <view class="hero-swiper hero-static">
+      <image src="{{appearance.hero}}" mode="aspectFill" class="hero-image" />
+      <view class="hero-edit" bindtap="openAppearancePanel" hover-class="hero-edit-pressed" hover-stay-time="80"><text>✦</text> 装扮小屋</view>
+    </view>
+
+    <view wx:if="{{setupMessage}}" class="setup-message">{{setupMessage}}</view>
+
+    <view class="reminder-card">
+      <view class="reminder-heading"><view><text class="reminder-heading-icon">💌</text>把想念送到微信</view><text class="reminder-badge">双人提醒</text></view>
+      <view class="reminder-counters">
+        <view class="reminder-counter reminder-counter-mine">
+          <view class="reminder-owner">我还能接收</view>
+          <view class="reminder-number-row"><text class="reminder-number {{reminderAdded ? 'reminder-number-pop' : ''}}">{{reminderLoaded ? reminderCredits : '—'}}</text><text class="reminder-unit">次</text><text wx:if="{{reminderAdded}}" class="reminder-plus">＋1 ♡</text></view>
+          <view class="reminder-direction">接收{{partnerName}}的新动态</view>
+        </view>
+        <view class="reminder-counter reminder-counter-partner">
+          <view class="reminder-owner">{{partnerName}}还能接收</view>
+          <view class="reminder-number-row"><text class="reminder-number">{{reminderLoaded ? partnerReminderCredits : '—'}}</text><text class="reminder-unit">次</text></view>
+          <view class="reminder-direction">接收我的新动态</view>
+        </view>
+      </view>
+      <view wx:if="{{reminderLoaded && (reminderCredits <= 1 || partnerReminderCredits <= 1)}}" class="reminder-low">
+        <text>🌿 提醒快用完啦</text>
+        <view wx:if="{{reminderCredits <= 1}}">{{reminderCredits === 1 ? '你还剩 1 次，顺手补几次吧' : '你的次数已用完，补充后继续接收'}}</view>
+        <view wx:if="{{partnerReminderCredits <= 1}}">{{partnerName}}{{partnerReminderCredits === 1 ? '还剩 1 次' : '的次数已用完'}}，需要对方在自己手机补充</view>
+      </view>
+      <button class="reminder-add" bindtap="enablePartnerReminder" loading="{{reminderBusy}}" disabled="{{reminderBusy || !reminderLoaded}}" hover-class="reminder-add-pressed">{{reminderBusy ? '正在补充…' : '＋ 补充 1 次提醒'}}</button>
+      <view class="reminder-help">成功一次加 1 次，可以接着点，攒几次慢慢用</view>
+      <view class="reminder-footnote">这里只记录微信提醒次数，次数用完仍可查看日记</view>
+      <view wx:if="{{reminderError}}" class="reminder-error">{{reminderError}}</view>
+      <view wx:if="{{reminderLowNotice}}" class="reminder-notice" role="alert"><text>{{reminderLowNotice}}</text><button class="reminder-notice-close" bindtap="dismissReminderNotice" aria-label="收起次数提示" hover-class="ux-pressed" hover-stay-time="80">知道啦</button></view>
+    </view>
+
+    <view wx:if="{{anniversaryDay}}" class="section-block anniversary-section">
+      <view class="soft-card anniversary-card">
+        <view class="anniversary-copy">
+          <view class="anniversary-tag">💞 纪念日</view>
+          <view class="anniversary-eyebrow">一起走过的每一天，都是心动的证明</view>
+          <view class="anniversary-count"><text class="anniversary-small">相伴第</text><text class="anniversary-number">{{anniversaryDay}}</text><text class="anniversary-small">天</text></view>
+          <view class="anniversary-date">♡ 始于 {{anniversaryDateText}}</view>
+        </view>
+        <image class="anniversary-illustration {{appearanceDisplayCustom.anniversary ? 'anniversary-custom' : ''}}" src="{{appearance.anniversary}}" mode="{{appearanceDisplayCustom.anniversary ? 'aspectFill' : 'aspectFit'}}" />
+        <text class="anniversary-sparkle sparkle-one">✦</text><text class="anniversary-sparkle sparkle-two">♡</text>
+      </view>
+    </view>
+
+    <view class="section-block mood-section">
+      <view class="section-heading"><view class="heading-left"><text class="heading-icon">🌈</text><text>今天的心情</text></view><text class="section-action">点自己的卡片选择</text></view>
+      <view class="mood-grid">
+        <view class="mood-card mood-card-a" bindtap="chooseMood" data-slot="A" data-editable="{{mine.canEditMood}}" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="mood-owner"><text class="owner-dot dot-a"></text>{{mine.name}}的心情</view>
+          <view class="mood-main"><text class="mood-emoji">{{mine.mood.emoji}}</text><view><view class="mood-label">{{mine.mood.label}}</view><view class="mood-note">{{mine.mood.note}}</view></view></view>
+          <view class="mood-hint">{{mine.canEditMood ? '点击换心情 ›' : '来自' + mine.name + '的分享'}}</view>
+        </view>
+        <view class="mood-card mood-card-b" bindtap="chooseMood" data-slot="B" data-editable="{{partner.canEditMood}}" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="mood-owner"><text class="owner-dot dot-b"></text>{{partner.name}}的心情</view>
+          <view class="mood-main"><text class="mood-emoji">{{partner.mood.emoji}}</text><view><view class="mood-label">{{partner.mood.label}}</view><view class="mood-note">{{partner.mood.note}}</view></view></view>
+          <view class="mood-hint">{{partner.canEditMood ? '点击换心情 ›' : '来自' + partner.name + '的分享'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-block steps-section">
+      <view class="section-heading"><view class="heading-left"><text class="heading-icon">👟</text><text>微信运动</text></view><text class="section-action">今日步数 · 各自同步</text></view>
+      <view class="steps-panel">
+        <view class="steps-card steps-card-a" bindtap="syncWeRun" data-editable="{{mine.canSyncSteps}}" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="steps-card-top"><text class="steps-owner">{{mine.name}}</text><text class="steps-status">{{mine.canSyncSteps ? '同步我的' : '对方步数'}}</text></view>
+          <view class="steps-number">{{mine.steps}}<text wx:if="{{mine.steps !== '--'}}">步</text></view>
+          <view class="steps-foot">{{mine.canSyncSteps ? '点击从微信运动更新 ›' : (mine.steps === '--' ? '等待' + mine.name + '今天同步' : '今天也在好好走路')}}</view>
+          <text class="steps-decor">✦</text>
+        </view>
+        <view class="steps-card steps-card-b" bindtap="syncWeRun" data-editable="{{partner.canSyncSteps}}" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="steps-card-top"><text class="steps-owner">{{partner.name}}</text><text class="steps-status">{{partner.canSyncSteps ? '同步我的' : '对方步数'}}</text></view>
+          <view class="steps-number">{{partner.steps}}<text wx:if="{{partner.steps !== '--'}}">步</text></view>
+          <view class="steps-foot">{{partner.canSyncSteps ? '点击从微信运动更新 ›' : (partner.steps === '--' ? '等待' + partner.name + '今天同步' : '今天也在好好走路')}}</view>
+          <text class="steps-decor">♡</text>
+        </view>
+      </view>
+      <view class="steps-privacy">🔒 只展示当天总步数，不保存运动明细</view>
+    </view>
+
+    <view wx:if="{{hasSchedule}}" class="section-block schedule-feature" bindtap="openSchedule" hover-class="ux-pressed" hover-stay-time="80">
+      <view class="schedule-feature-top"><view><text class="schedule-feature-icon">📚</text><text class="schedule-feature-title">双人课表</text></view><text class="schedule-feature-action">查看本周 ›</text></view>
+      <view class="schedule-person-row"><view class="schedule-person person-mine"><image wx:if="{{mine.avatar.imageFileId}}" src="{{mine.avatar.imageFileId}}" mode="aspectFill" /><view wx:else class="member-avatar-fallback">{{mine.avatar.glyph}}</view><view><text>{{mine.name}}的课程</text><text>自己的安排，自己说了算</text></view></view><view class="schedule-person person-partner"><image wx:if="{{partner.avatar.imageFileId}}" src="{{partner.avatar.imageFileId}}" mode="aspectFill" /><view wx:else class="member-avatar-fallback">{{partner.avatar.glyph}}</view><view><text>{{partner.name}}的课程</text><text>忙碌也要记得休息</text></view></view></view>
+      <text class="schedule-feature-star star-a">✦</text><text class="schedule-feature-star star-b">♡</text>
+    </view>
+
+    <view class="section-block dinner-feature" bindtap="openDinner" hover-class="ux-pressed" hover-stay-time="80">
+      <view class="dinner-icon"><text>🍽️</text><text class="dinner-heart">♡</text></view>
+      <view class="dinner-copy"><view class="dinner-eyebrow">今晚吃什么</view><view class="dinner-title">今晚点菜</view><view class="dinner-note">你点菜，我把喜欢端上桌</view></view>
+      <view class="dinner-tags"><text>🥩 荤菜</text><text>🥬 素菜</text><text>🍰 甜品</text></view>
+      <view class="dinner-action">去看看 <text>›</text></view>
+      <text class="dinner-sparkle dinner-sparkle-one">✦</text><text class="dinner-sparkle dinner-sparkle-two">✿</text>
+    </view>
+
+    <view class="feature-grid">
+      <view class="section-block rules-section feature-card" bindtap="openHouseRules" hover-class="ux-pressed" hover-stay-time="80">
+        <view class="feature-heading"><text>📖 胡巴家规</text><text class="feature-arrow">›</text></view>
+        <image class="feature-illustration diary-illustration {{appearanceDisplayCustom.rules ? 'feature-custom' : ''}}" src="{{appearance.rules}}" mode="{{appearanceDisplayCustom.rules ? 'aspectFill' : 'aspectFit'}}" />
+        <view wx:if="{{latestRule}}" class="feature-copy">“{{latestRule.content}}”</view>
+        <view wx:else class="feature-copy">记录两个人的小小心得</view>
+        <view class="feature-meta">已写 {{ruleCount}} 条</view>
+      </view>
+
+      <view class="section-block feature-card score-feature">
+        <view class="feature-heading"><text>💰 积分榜</text><text class="feature-arrow">✦</text></view>
+        <view class="mini-score"><image wx:if="{{mine.avatar.imageFileId}}" src="{{mine.avatar.imageFileId}}" mode="aspectFill" /><view wx:else class="mini-avatar-fallback">{{mine.avatar.glyph}}</view><text>{{mine.name}}</text><text class="mini-score-value">{{mine.credit}}</text></view>
+        <view class="mini-score"><image wx:if="{{partner.avatar.imageFileId}}" src="{{partner.avatar.imageFileId}}" mode="aspectFill" /><view wx:else class="mini-avatar-fallback">{{partner.avatar.glyph}}</view><text>{{partner.name}}</text><text class="mini-score-value">{{partner.credit}}</text></view>
+        <view class="feature-meta score-meta">一起攒下小幸福 ♡</view>
+      </view>
+    </view>
+
+    <view class="section-block welcome-section">
+      <view class="section-heading"><view class="heading-left"><text class="heading-icon">💌</text><text>欢迎回来</text></view><text class="section-action">今日小纸条</text></view>
+      <view class="soft-card welcome-card">
+        <image class="welcome-illustration {{appearanceDisplayCustom.welcome ? 'welcome-custom' : ''}}" src="{{appearance.welcome}}" mode="{{appearanceDisplayCustom.welcome ? 'aspectFill' : 'aspectFit'}}" />
+        <view class="welcome-copy"><view class="welcome-title">欢迎！{{mine.name}}和{{partner.name}}！</view><view class="welcome-subtitle">有你在，平凡的一天也会闪闪发光。</view></view>
+        <text class="welcome-flower">✿</text>
+      </view>
+    </view>
+
+    <view class="section-block space-entry-section">
+      <view class="space-entry-card" bindtap="openSpaceSetting" hover-class="space-entry-card-pressed">
+        <view class="space-entry-icon" aria-hidden="true">
+          <view class="space-entry-slider space-entry-slider-one"><text></text></view>
+          <view class="space-entry-slider space-entry-slider-two"><text></text></view>
+          <view class="space-entry-slider space-entry-slider-three"><text></text></view>
+        </view>
+        <view class="space-entry-copy">
+          <view class="space-entry-kicker">OUR SPACE</view>
+          <view class="space-entry-title">空间与安全</view>
+          <view class="space-entry-note">{{spaceName || '我们的小屋'}} · 管理资料、邀请与配对</view>
+          <view class="space-entry-chips"><text class="space-entry-chip">邀请与资料</text><text class="space-entry-chip">配对与数据</text><text class="space-entry-chip" catchtap="openHelp">使用说明</text></view>
+        </view>
+        <view class="space-entry-arrow">›</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{appearanceOpen}}" class="appearance-overlay" catchtap="closeAppearancePanel">
+  <view class="appearance-sheet" catchtap="stopAppearanceBubble">
+    <view class="appearance-handle"></view>
+    <view class="appearance-header">
+      <view><view class="appearance-kicker">OUR LITTLE SPACE</view><view class="appearance-title">装扮我们的小屋</view><view class="appearance-subtitle">你们都能修改，换好后会同步给对方</view></view>
+      <view class="appearance-close" catchtap="closeAppearancePanel" aria-label="关闭装扮面板">×</view>
+    </view>
+
+    <scroll-view class="appearance-scroll" scroll-y="true" enhanced="true" show-scrollbar="false">
+      <view class="appearance-section-title"><text>首页装扮</text><text>选图后直接替换</text></view>
+      <view class="appearance-grid">
+        <view class="appearance-tile" data-slot="hero" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.hero}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>🌄</text><view><text>主页封面</text><text>横向大图</text></view></view>
+          <view wx:if="{{appearanceCustom.hero}}" class="appearance-reset" data-slot="hero" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'hero'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile" data-slot="anniversary" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.anniversary}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>💞</text><view><text>纪念日插画</text><text>甜蜜留念</text></view></view>
+          <view wx:if="{{appearanceCustom.anniversary}}" class="appearance-reset" data-slot="anniversary" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'anniversary'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile" data-slot="rules" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.rules}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>📖</text><view><text>家规插画</text><text>小小约定</text></view></view>
+          <view wx:if="{{appearanceCustom.rules}}" class="appearance-reset" data-slot="rules" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'rules'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile" data-slot="welcome" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.welcome}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>💌</text><view><text>欢迎信插画</text><text>每日问候</text></view></view>
+          <view wx:if="{{appearanceCustom.welcome}}" class="appearance-reset" data-slot="welcome" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'welcome'}}" class="appearance-loading">更换中…</view>
+        </view>
+      </view>
+
+      <view class="appearance-section-title page-theme-title"><text>页面主题</text><text>同模块页面共用一张</text></view>
+      <view class="appearance-grid">
+        <view class="appearance-tile" data-slot="mission" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.mission}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>📝</text><view><text>任务主题</text><text>列表·新增·详情</text></view></view>
+          <view wx:if="{{appearanceCustom.mission}}" class="appearance-reset" data-slot="mission" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'mission'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile" data-slot="market" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.market}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>🎁</text><view><text>商城主题</text><text>商城·商品页面</text></view></view>
+          <view wx:if="{{appearanceCustom.market}}" class="appearance-reset" data-slot="market" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'market'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile" data-slot="records" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.records}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>📷</text><view><text>记录主题</text><text>回忆相框</text></view></view>
+          <view wx:if="{{appearanceCustom.records}}" class="appearance-reset" data-slot="records" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'records'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile" data-slot="dinner" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.dinner}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>🍽️</text><view><text>晚餐主题</text><text>点菜页照片</text></view></view>
+          <view wx:if="{{appearanceCustom.dinner}}" class="appearance-reset" data-slot="dinner" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'dinner'}}" class="appearance-loading">更换中…</view>
+        </view>
+        <view class="appearance-tile appearance-tile-wide" data-slot="storage" bindtap="replaceAppearance" hover-class="appearance-tile-pressed">
+          <image src="{{appearance.storage}}" mode="aspectFill" /><view class="appearance-tile-shade"></view><view class="appearance-tile-label"><text>🧰</text><view><text>仓库主题</text><text>收藏盒背景</text></view></view>
+          <view wx:if="{{appearanceCustom.storage}}" class="appearance-reset" data-slot="storage" catchtap="resetAppearance">恢复默认</view>
+          <view wx:if="{{appearanceBusyKey === 'storage'}}" class="appearance-loading">更换中…</view>
+        </view>
+      </view>
+
+      <view class="appearance-section-title avatar-section-title"><text>双方头像</text><text>各自更换自己的</text></view>
+      <view class="avatar-custom-card">
+        <view class="avatar-custom-person">
+          <view class="avatar-custom-frame mine-frame" bindtap="replaceMyAvatar" hover-class="avatar-frame-pressed">
+            <image wx:if="{{mine.avatar.imageFileId}}" src="{{mine.avatar.imageFileId}}" mode="aspectFill" /><text wx:else>{{mine.avatar.glyph}}</text>
+            <view class="avatar-camera">📷</view>
+            <view wx:if="{{appearanceBusyKey === 'avatar'}}" class="avatar-loading">更换中…</view>
+          </view>
+          <view class="avatar-custom-name">我的头像</view>
+          <view wx:if="{{mine.avatar.imageFileId}}" class="avatar-reset" catchtap="resetMyAvatar">恢复默认</view>
+        </view>
+        <view class="avatar-heart-line"><text>♡</text><view></view></view>
+        <view class="avatar-custom-person">
+          <view class="avatar-custom-frame partner-frame">
+            <image wx:if="{{partner.avatar.imageFileId}}" src="{{partner.avatar.imageFileId}}" mode="aspectFill" /><text wx:else>{{partner.avatar.glyph}}</text>
+          </view>
+          <view class="avatar-custom-name">{{partner.name}}的头像</view>
+          <view class="avatar-partner-note">由对方自己更换</view>
+        </view>
+      </view>
+      <view class="appearance-privacy">🔒 图片只用于你们的双人空间，并会经过安全检测</view>
+      <view class="appearance-safe-bottom"></view>
+    </scroll-view>
+  </view>
+</view>
+
+<xiaoba-orb />

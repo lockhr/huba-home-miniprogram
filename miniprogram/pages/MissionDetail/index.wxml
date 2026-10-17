@@ -1,0 +1,15 @@
+<wxs module="util" src="../util.wxs" />
+<view class="ux-page subpage-shell">
+  <view class="subpage-hero"><image src="{{appearance.mission}}" mode="aspectFill" /><view class="subpage-hero-title">每一次完成都值得庆祝</view></view>
+  <view class="detail-feedback"><feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取详情…" bind:retry="loadDetail" /></view>
+  <view wx:if="{{mission}}" class="form-group detail-card">
+    <view class="form-cell"><view class="detail-label">📌 任务名称</view><view class="detail-value detail-highlight">{{mission.title}}</view></view>
+    <view class="form-cell"><view class="detail-label">💡 执行计划</view><view class="detail-value">此任务由{{from}}申请执行，由{{to}}监督确认。</view></view>
+    <view wx:if="{{mission.planDate}}" class="form-cell"><view class="detail-label">🗓️ 计划日期</view><view class="detail-value">{{mission.planDate}}</view></view>
+    <view class="form-cell"><view class="detail-label">💰 奖励力度：<text class="detail-highlight">{{mission.credit}}</text> 积分</view><progress percent="{{creditPercent}}" border-radius="8" font-size="8" duration="10" color="#ff6d9c" active stroke-width="9" /><view class="progress-caption">最高 {{maxCredit}} 积分</view></view>
+    <view class="form-cell"><view class="detail-label">📅 创建日期</view><view class="detail-value">{{dateStr}} · {{util.cutStr(timeStr, 8)}}</view></view>
+    <view class="form-cell"><view class="detail-label">📝 任务详情</view><view class="detail-value">{{mission.desc || '还没有补充说明'}}</view></view>
+  </view>
+</view>
+
+<xiaoba-orb />

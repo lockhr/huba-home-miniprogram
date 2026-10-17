@@ -1,0 +1,1 @@
+.picker-value { display: flex; justify-content: space-between; box-sizing: border-box; width: 100%; padding: 16rpx 18rpx; border-radius: 18rpx; color: var(--muted); background: var(--pink-pale); font-size: 26rpx; }

@@ -1,0 +1,23 @@
+<view class="ux-page dish-form-page">
+  <view class="form-intro"><view class="intro-icon">🧺</view><view><view class="intro-title">把喜欢放进菜单</view><view class="intro-note">下一次纠结吃什么，就来这里选</view></view><text class="intro-star">✦</text></view>
+
+  <view class="photo-picker" bindtap="chooseImage" hover-class="ux-pressed" hover-stay-time="80">
+    <image wx:if="{{imageTempPath}}" src="{{imageTempPath}}" mode="aspectFill" />
+    <view wx:else class="photo-empty"><text class="photo-icon">📷</text><view>添加菜品照片</view><text>支持相册或直接拍照</text></view>
+    <view wx:if="{{imageTempPath}}" class="photo-change">换一张</view>
+  </view>
+  <view wx:if="{{imageTempPath}}" class="remove-photo" bindtap="removeImage" hover-class="ux-pressed" hover-stay-time="80">移除照片</view>
+
+  <view class="form-card">
+    <view class="field"><view class="field-label"><text>🍽️</text>菜名</view><input disabled="{{saving}}" maxlength="20" value="{{title}}" bindinput="setTitle" placeholder="例如：番茄牛腩" placeholder-class="field-placeholder" /></view>
+    <view class="field"><view class="field-label"><text>💌</text>一句介绍</view><input disabled="{{saving}}" maxlength="80" value="{{desc}}" bindinput="setDesc" placeholder="例如：酸甜暖胃，适合一起吃" placeholder-class="field-placeholder" /></view>
+    <view class="field"><view class="field-label"><text>⏱</text>大约用时</view><view class="minutes-line"><input disabled="{{saving}}" type="number" maxlength="3" value="{{minutes}}" bindinput="setMinutes" /><text>分钟</text></view></view>
+  </view>
+
+  <view class="category-title">给它分个类 <text>方便以后快速找到</text></view>
+  <view class="category-grid"><view wx:for="{{categories}}" wx:key="key" class="category-option {{category === item.key ? 'active' : ''}}" data-category="{{item.key}}" bindtap="selectCategory" hover-class="ux-pressed" hover-stay-time="80"><text>{{item.icon}}</text><view>{{item.label}}</view><view class="category-check">{{category === item.key ? '✓' : ''}}</view></view></view>
+
+  <button class="save-dish {{saving ? 'disabled' : ''}}" disabled="{{saving}}" loading="{{saving}}" bindtap="saveDish" hover-class="ux-pressed" hover-stay-time="80"><text>♡</text>{{saving ? '正在添加…' : '放进胡巴菜单'}}</button>
+</view>
+
+<xiaoba-orb />

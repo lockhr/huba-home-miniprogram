@@ -1,0 +1,12 @@
+.subpage-shell { padding-top: 20rpx; }
+.space-hero-title { letter-spacing: 1rpx; }
+.identity-notice { display: flex; align-items: flex-start; margin: 18rpx 0 4rpx; padding: 22rpx; border: 2rpx solid #f0dce5; border-radius: 24rpx; background: #fffafb; }
+.identity-check { flex: none; display: flex; align-items: center; justify-content: center; width: 38rpx; height: 38rpx; margin: 2rpx 18rpx 0 0; border: 2rpx solid #c9b3bd; border-radius: 12rpx; color: #fff; font-size: 26rpx; font-weight: 800; }
+.identity-check-active { border-color: #eb668f; background: #eb668f; box-shadow: 0 7rpx 16rpx rgba(235, 102, 143, .2); }
+.identity-copy { flex: 1; min-width: 0; }
+.identity-title { color: #4b3340; font-size: 27rpx; font-weight: 800; }
+.identity-note { margin-top: 8rpx; color: #8b7480; font-size: 22rpx; line-height: 1.65; }
+.space-account-entry { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; margin-top: 28rpx; padding: 24rpx 28rpx; border: 2rpx solid #f0dce5; border-radius: 24rpx; background: #fffafb; }
+.space-account-entry-title { color: #604352; font-size: 27rpx; font-weight: 700; }
+.space-account-entry-note { margin-top: 8rpx; color: #927b85; font-size: 22rpx; line-height: 1.5; }
+.space-account-entry-arrow { flex: none; color: #d46a8a; font-size: 44rpx; line-height: 1; }

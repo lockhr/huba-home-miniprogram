@@ -1,0 +1,15 @@
+.account-page { animation: page-in 360ms ease-out both; }
+.form-cell { padding: 0; }
+.collection-note { margin: 16rpx 10rpx -8rpx; color: #ff6d9c; font-family: "STKaiti","KaiTi",serif; font-size: 23rpx; text-align: right; transform: rotate(-4deg); }
+.storage-box { position: relative; display: flex; align-items: center; min-height: 170rpx; margin-top: 22rpx; padding: 30rpx 20rpx 20rpx; overflow: hidden; border: 3rpx solid rgba(255,255,255,.92); border-radius: 32rpx; background: linear-gradient(145deg,#ffeef4,#fff 55%,#edf9f1); box-shadow: var(--shadow); box-sizing: border-box; }.box-ribbon { position: absolute; top: 0; left: 0; padding: 7rpx 18rpx; border-radius: 0 0 15rpx 0; color: #fff; background: #ff6e9f; font-size: 14rpx; letter-spacing: 2rpx; }.box-icon { display: flex; align-items: center; justify-content: center; width: 92rpx; height: 92rpx; margin-right: 16rpx; border-radius: 28rpx; background: rgba(255,255,255,.78); font-size: 46rpx; }.box-copy { min-width: 0; flex: 1; }.box-copy view { color: var(--navy); font-size: 26rpx; font-weight: 850; }.box-copy text { display: block; width: 240rpx; margin-top: 6rpx; color: #8b98a8; font-size: 18rpx; line-height: 1.4; }.box-count { display: flex; align-items: center; flex-direction: column; justify-content: center; width: 76rpx; height: 82rpx; margin-left: 8rpx; border-radius: 21rpx; color: #d25584; background: rgba(255,255,255,.76); }.box-count text:first-child { font-size: 28rpx; font-weight: 850; }.box-count text:last-child { font-size: 15rpx; }.box-count.used { color: #57a16d; }
+.product-thumb { display: flex; align-items: center; justify-content: center; width: 108rpx; height: 96rpx; margin-right: 20rpx; overflow: hidden; border-radius: 22rpx; background: linear-gradient(145deg,#fff8fb,#ffe7f0); }
+.product-thumb image { width: 112rpx; height: 92rpx; }
+.storage-thumb { position: relative; border-radius: 24rpx 24rpx 24rpx 8rpx; }.thumb-tone-1 { background: linear-gradient(145deg,#fff,#eefbf2); }.thumb-tone-2 { background: linear-gradient(145deg,#fffaf0,#ffefd1); }.memory-thumb { background: linear-gradient(145deg,#f5f0ff,#fff3f8); }.storage-kicker { margin-bottom: 3rpx; color: #d05d89; font-size: 17rpx; letter-spacing: 1rpx; }.used-kicker { color: #7b9a83; }
+.used-row { opacity: .72; }
+.useBtn .weui-slideview__btn { background: #91d9a1; }
+.starBtn .weui-slideview__btn { background: #ffd66b; }
+.removeBtn .weui-slideview__btn { background: #ff8f9f; }
+.box-photo,.box-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.box-photo { opacity: .3; }
+.box-shade { background: linear-gradient(90deg,rgba(255,243,248,.97) 0%,rgba(255,255,255,.9) 58%,rgba(239,249,243,.7) 100%); }
+.box-ribbon,.box-icon,.box-copy,.box-count { position: relative; z-index: 2; }

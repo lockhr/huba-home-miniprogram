@@ -1,0 +1,54 @@
+/* Shared presentation only: retain WeUI gesture and action indices. */
+.huba-actions .weui-slideview__right { background: #fff9fb; }
+.huba-actions .weui-slideview__btn__wrp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  min-width: 64px;
+  box-sizing: border-box;
+  padding: 8px 4px;
+  background: #fff9fb;
+}
+.huba-actions .weui-slideview__btn__wrp::before { display: none; }
+.huba-actions .weui-slideview__btn__wrp .weui-slideview__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 56px;
+  height: 60px;
+  min-height: 44px;
+  padding: 6px 2px;
+  border: 1px solid #f4d5e1;
+  border-radius: 17px;
+  background: #fce7ef;
+  color: #a13c63;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+.huba-actions .weui-slideview__btn::before {
+  content: '';
+  display: block;
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  margin-bottom: 4px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.huba-actions .starBtn .weui-slideview__btn { background: #f6eff4; color: #80536c; border-color: #ebdfe8; }
+.huba-actions .removeBtn .weui-slideview__btn { background: #fff1f2; color: #ac4055; border-color: #f4dadd; }
+.huba-actions .weui-slideview__btn:active { opacity: .72; transform: scale(.96); }
+.huba-actions .buyBtn .weui-slideview__btn::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23b64370%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%208h16l-1%2012H5L4%208Z%22%2F%3E%3Cpath%20d%3D%22M8%208V6a4%204%200%200%201%208%200v2%22%2F%3E%3Cpath%20d%3D%22m9%2013%203%203%203-3%22%2F%3E%3C%2Fsvg%3E"); }
+.huba-actions .markBtn .weui-slideview__btn::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23b64370%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%225%22%2F%3E%3Cpath%20d%3D%22m8%2012%203%203%205-6%22%2F%3E%3C%2Fsvg%3E"); }
+.huba-actions .useBtn .weui-slideview__btn::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23b64370%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%207h16v4a2%202%200%200%200%200%204v4H4v-4a2%202%200%200%200%200-4V7Z%22%2F%3E%3Cpath%20d%3D%22M15%2010v1m0%204v1%22%2F%3E%3C%2Fsvg%3E"); }
+.huba-actions .starBtn .weui-slideview__btn::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2392627b%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m12%203%202.8%205.7%206.2.9-4.5%204.4%201.1%206.2-5.6-3-5.6%203%201.1-6.2L3%209.6l6.2-.9L12%203Z%22%2F%3E%3C%2Fsvg%3E"); }
+.huba-actions .removeBtn .weui-slideview__btn::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23ba4d61%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%207h16M9%207V4h6v3M6%207l1%2013h10l1-13M10%2011v5m4-5v5%22%2F%3E%3C%2Fsvg%3E"); }
+@media (prefers-reduced-motion: reduce) {
+  .huba-actions .weui-slideview__btn { transition: none; }
+}

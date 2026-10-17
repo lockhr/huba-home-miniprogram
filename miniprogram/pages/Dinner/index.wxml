@@ -1,0 +1,49 @@
+<view class="ux-page page-shell dinner-page">
+  <page-heading title="胡巴点菜间" subtitle="今天也要好好吃饭 ♡" />
+  <view class="content-wrap dinner-content">
+    <view class="dinner-banner">
+      <view class="banner-bow">🎀</view><view class="banner-copy"><view class="banner-title">今天想吃什么？</view><view class="banner-note">你点菜，我来把喜欢端上桌</view></view>
+      <view class="banner-photo"><image src="{{appearance.dinner}}" mode="aspectFill" /><text>🍴</text></view><text class="banner-star star-a">✦</text><text class="banner-star star-b">✿</text>
+    </view>
+
+    <feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取菜单…" bind:retry="loadDinner" />
+    <view class="dinner-tabs"><view class="dinner-tab {{activeTab === 'menu' ? 'active' : ''}}" data-tab="menu" bindtap="changeTab" hover-class="ux-pressed" hover-stay-time="80">正在点菜</view><view class="dinner-tab {{activeTab === 'history' ? 'active' : ''}}" data-tab="history" bindtap="changeTab" hover-class="ux-pressed" hover-stay-time="80">点单记录</view></view>
+
+    <block wx:if="{{activeTab === 'menu'}}">
+      <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}"><view class="category-row"><view wx:for="{{categories}}" wx:key="key" class="category-chip {{activeCategory === item.key ? 'active' : ''}}" data-category="{{item.key}}" bindtap="changeCategory" hover-class="ux-pressed" hover-stay-time="80"><text>{{item.icon}}</text>{{item.label}}</view></view></scroll-view>
+
+      <view class="menu-guide"><text>长按自己添加的菜可以删除</text><text>{{selectedCount ? '已选 ' + selectedCount + ' 道' : '等你来选 ♡'}}</text></view>
+      <view class="dish-list" wx:if="{{visibleDishes.length}}">
+        <view wx:for="{{visibleDishes}}" wx:key="_id" class="dish-card tone-{{item.tone}} {{item.selected ? 'selected' : ''}}" data-id="{{item._id}}" bindtap="toggleDish" bindlongpress="deleteDish" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="dish-visual">
+            <image wx:if="{{item.imageUrl || item.imageFileId}}" src="{{item.imageUrl || item.imageFileId}}" mode="aspectFill" />
+            <view wx:else class="dish-placeholder"><text>{{item.categoryIcon}}</text><text class="placeholder-heart">♡</text></view>
+          </view>
+          <view class="dish-copy"><view class="dish-title-line"><text class="dish-title">{{item.title}}</text><text class="dish-label">{{item.categoryLabel}}</text></view><view class="dish-desc">{{item.desc || '两个人一起吃，会更香。'}}</view><view class="dish-time">⏱ 约 {{item.minutes}} 分钟</view></view>
+          <view class="dish-select"><view class="select-circle">{{item.selected ? '✓' : '＋'}}</view><text>{{item.selected ? '已点' : '点它'}}</text></view>
+        </view>
+      </view>
+      <view class="empty-menu" wx:elif="{{!loading && !loadError}}"><view class="empty-bowl">🥣</view><view class="empty-menu-title">{{activeCategory === 'all' ? '菜单还是空的' : '这个分类还没有菜品'}}</view><view class="empty-menu-note">先把你们爱吃的第一道菜放进来吧</view><view class="empty-add" bindtap="openAddDish" hover-class="ux-pressed" hover-stay-time="80">＋ 添加菜品</view></view>
+    </block>
+
+    <block wx:else>
+      <view class="order-list" wx:if="{{orders.length}}"><view wx:for="{{orders}}" wx:key="_id" class="order-card"><view class="order-date"><text>💌 一次好好吃饭</text><text>{{item.displayDate}}</text></view><view class="order-dishes"><text wx:for="{{item.items}}" wx:for-item="dish" wx:key="dishId">{{dish.title}}</text></view><view class="order-footer">共 {{item.items.length}} 道菜 · 今天也有认真生活</view></view></view>
+      <view class="empty-menu" wx:elif="{{!loading && !loadError}}"><view class="empty-bowl">🧺</view><view class="empty-menu-title">还没有完成的点单</view><view class="empty-menu-note">选好菜后，第一份共同菜单会留在这里</view></view>
+    </block>
+  </view>
+
+  <view wx:if="{{activeTab === 'menu' && visibleDishes.length}}" class="order-dock">
+    <view class="dock-copy">
+      <view class="dock-cart">🛒</view>
+      <view class="dock-text">
+        <view class="dock-count-line"><text>已选择</text><text class="dock-count">{{selectedCount}}</text><text>道菜</text></view>
+        <view class="dock-subtitle">一起吃饭，就是最好的时光</view>
+      </view>
+    </view>
+    <view class="complete-button {{selectedCount && !ordering ? '' : 'disabled'}}" aria-disabled="{{!selectedCount || ordering}}" bindtap="completeOrder" hover-class="ux-pressed" hover-stay-time="80"><text>{{ordering ? '正在完成…' : '完成点单'}}</text><text class="complete-heart">♡</text></view>
+  </view>
+</view>
+
+<view wx:if="{{activeTab === 'menu'}}" class="create-action-capsule dish-add-button" hover-class="create-action-active" role="button" aria-label="新增菜品" bindtap="openAddDish"><view class="create-action-icon">＋</view><view class="create-action-copy"><text class="create-action-label">加菜</text><text>放进共同菜单</text></view></view>
+
+<xiaoba-orb />

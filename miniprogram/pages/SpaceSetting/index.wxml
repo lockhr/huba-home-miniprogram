@@ -1,0 +1,159 @@
+<view class="ux-page subpage-shell">
+  <view class="space-hero">
+    <view class="space-hero-title">你们的空间</view>
+    <view class="space-hero-note">这里可以改空间名称和纪念日、重新生成邀请，也可以解除配对或申请删除数据</view>
+    <view class="space-help-link" role="button" aria-label="查看使用说明" bindtap="openHelp" hover-class="ux-pressed" hover-stay-time="80"><text>查看使用说明</text><view class="space-help-arrow" aria-hidden="true"></view></view>
+  </view>
+
+  <view wx:if="{{previewMode}}" class="space-alert">这是只读预览：下面看到的是示例内容，操作不会被保存。</view>
+  <view wx:if="{{error}}" class="space-alert">{{error}}</view>
+  <view wx:if="{{notice}}" class="space-notice">{{notice}}</view>
+
+  <view wx:if="{{loading}}" class="space-status-card">
+    <view class="space-status-title">正在读取空间信息…</view>
+  </view>
+
+  <block wx:elif="{{loadError}}">
+    <view class="space-status-card">
+      <view class="space-status-title">{{loadRecovery === 'onboarding' ? '还差一步就能使用' : '暂时没能读取空间'}}</view>
+      <view class="space-status-note">{{loadRecovery === 'onboarding' ? '请先确认当前微信身份并设置昵称，完成后就可以创建或加入空间。' : loadError}}</view>
+      <view wx:if="{{loadRecovery === 'onboarding'}}" class="space-status-detail">系统提示：{{loadError}}</view>
+    </view>
+    <button wx:if="{{loadRecovery === 'onboarding'}}" class="space-submit" bindtap="goOnboarding" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">去完成首次设置</button>
+    <button wx:else class="space-submit" bindtap="retryLoad" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">重新加载</button>
+  </block>
+
+  <block wx:elif="{{state === 'unpaired'}}">
+    <view class="space-status-card">
+      <view class="space-status-title">你还没有加入任何空间</view>
+      <view class="space-status-note">先设置昵称，然后创建空间或加入伴侣的邀请。</view>
+    </view>
+    <button class="space-submit" bindtap="goSetup" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">去建立我的空间</button>
+    <view wx:if="{{accountRegistered}}" class="form-group account-card">
+      <view class="form-cell">
+        <view class="form-cell_title">个人账号</view>
+        <view class="space-hint">当前账号已不在任何空间。注销只删除你的个人资料；此前共同空间的内容可能仍由对方保留。</view>
+        <view class="space-row-action space-row-danger" bindtap="deleteAccount" hover-class="ux-pressed" hover-stay-time="80">
+          <view>
+            <view class="space-row-action-title">注销个人账号</view>
+            <view class="space-row-action-note">删除昵称和头像设置，下次打开会重新开始</view>
+          </view>
+          <view class="space-row-arrow">›</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{deletionView.mode !== 'normal'}}" class="lifecycle-card lifecycle-card-{{deletionView.mode}}">
+      <view class="lifecycle-rail">
+        <view class="lifecycle-dot"></view>
+        <view class="lifecycle-line"></view>
+      </view>
+      <view class="lifecycle-content">
+        <view class="lifecycle-kicker">关系与数据</view>
+        <view class="lifecycle-title">{{deletionView.title}}</view>
+        <view class="lifecycle-message">{{deletionView.message}}</view>
+        <view class="space-row-action" bindtap="refreshStatus" hover-class="ux-pressed" hover-stay-time="80">刷新处理状态</view>
+        <view wx:if="{{deletionView.mode === 'awaiting-partner'}}" class="lifecycle-actions">
+          <button class="lifecycle-primary" bindtap="approveDeletion" loading="{{busy}}" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">确认注销共同空间</button>
+          <button class="lifecycle-secondary" bindtap="rejectDeletion" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">拒绝申请</button>
+        </view>
+        <button wx:elif="{{deletionView.mode === 'awaiting-requester' || deletionView.mode === 'cooldown'}}" class="lifecycle-secondary lifecycle-full" bindtap="cancelDeletion" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">{{deletionView.secondary}}</button>
+        <button wx:elif="{{deletionView.mode === 'ready-to-purge'}}" class="lifecycle-danger lifecycle-full" bindtap="finalizeDeletion" loading="{{busy}}" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">最终删除共同空间</button>
+        <button wx:elif="{{deletionView.mode === 'purging'}}" class="lifecycle-primary lifecycle-full" bindtap="continuePurge" loading="{{busy}}" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">继续安全清理</button>
+        <button wx:elif="{{deletionView.mode === 'legacy'}}" class="lifecycle-primary lifecycle-full" bindtap="restoreLegacyDeletion" loading="{{busy}}" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">撤销申请并恢复使用</button>
+        <button wx:if="{{deletionView.mode === 'ready-to-purge'}}" class="lifecycle-secondary lifecycle-full" bindtap="cancelDeletion" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80">撤销并恢复使用</button>
+      </view>
+    </view>
+
+    <block wx:if="{{!spaceLocked}}">
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">空间名称</view>
+        <input disabled="{{busy}}" class="form-cell_input" maxlength="20" value="{{spaceName}}" bindinput="setSpaceName" placeholder="例如：我们的小屋" placeholder-class="form-cell_placeholder" />
+      </view>
+      <view class="form-cell">
+        <view class="form-cell_title">纪念日（可以留空）</view>
+        <picker disabled="{{busy}}" mode="date" value="{{anniversaryDate}}" end="{{today}}" bindchange="setAnniversary">
+          <view class="form-cell_input space-date">{{anniversaryDate ? anniversaryDate : '还没有填写，点这里选择'}}</view>
+        </picker>
+        <view wx:if="{{anniversaryDate}}" class="space-clear" bindtap="clearAnniversary" hover-class="ux-pressed" hover-stay-time="80">清除纪念日</view>
+      </view>
+    </view>
+    <button class="space-submit {{busy ? 'space-submit-busy' : ''}}" bindtap="saveSpace" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">{{busy ? '正在保存…' : '保存空间信息'}}</button>
+
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">我的状态</view>
+        <view class="space-invite-row">
+          <view class="space-invite-label">昵称</view>
+          <view class="space-invite-value">{{avatarGlyph}} {{displayName}}</view>
+        </view>
+        <view class="space-invite-row">
+          <view class="space-invite-label">伴侣</view>
+          <view class="space-invite-value">{{partnerName}}</view>
+        </view>
+        <view class="space-invite-row">
+          <view class="space-invite-label">配对状态</view>
+          <view class="space-invite-value">{{partnerStatus}}</view>
+        </view>
+      </view>
+
+      <view class="form-cell">
+        <view class="form-cell_title">邀请伴侣加入</view>
+        <view wx:if="{{canLeaveSpace}}" class="space-hint">你们已经配对，无需再发送邀请码。</view>
+        <view wx:else class="space-hint">从这里生成并分享邀请卡片；右上角普通分享不含邀请码。每条邀请 48 小时内有效、只能使用一次，重新生成会让旧卡片立刻失效。</view>
+        <block wx:if="{{!canLeaveSpace}}">
+        <view wx:if="{{inviteExpiryText}}" class="space-invite-row">
+          <view class="space-invite-label">当前邀请</view>
+          <view class="space-invite-value">{{inviteExpiryText}}</view>
+        </view>
+        <view wx:if="{{inviteToken}}" class="space-invite-code">
+          <view class="space-invite-code-label">邀请码（可以长按选择）</view>
+          <text user-select="true">{{inviteToken}}</text>
+        </view>
+        <view class="space-row-action" bindtap="regenerateInvite" hover-class="ux-pressed" hover-stay-time="80">
+          <view>
+            <view class="space-row-action-title">生成新的邀请卡片</view>
+            <view class="space-row-action-note">对方还没加入时使用；旧邀请码会立即失效</view>
+          </view>
+          <view class="space-row-arrow">›</view>
+        </view>
+        <button class="space-copy-button" bindtap="copyInvite" loading="{{copyState === 'copying'}}" disabled="{{!inviteToken || copyState === 'copying'}}" hover-class="ux-pressed" hover-stay-time="80">{{copyState === 'copying' ? '正在复制…' : '一键复制邀请码'}}</button>
+        <view wx:if="{{copyState === 'success'}}" class="space-copy-success">✓ 已复制，可以直接粘贴到普通微信消息</view>
+        <view wx:if="{{copyState === 'manual'}}" class="space-copy-fallback">
+          <view class="space-copy-fallback-title">自动复制没有成功</view>
+          <view class="space-copy-fallback-note">{{copyError}}</view>
+          <text class="space-copy-fallback-code" user-select="true">{{inviteToken}}</text>
+          <view class="space-copy-fallback-tip">长按上方邀请码 → 选择“复制”</view>
+        </view>
+        <button class="space-share-button" open-type="share" disabled="{{!inviteToken}}">发送邀请卡片给伴侣</button>
+        </block>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">关系与数据</view>
+        <view class="space-hint">离开只影响你自己；注销共同空间须两次确认，双人空间还须对方同意。</view>
+        <view wx:if="{{canLeaveSpace}}" class="space-row-action space-row-danger" bindtap="unpair" hover-class="ux-pressed" hover-stay-time="80">
+          <view>
+            <view class="space-row-action-title">离开当前空间</view>
+            <view class="space-row-action-note">你会离开这个空间，对方空间里的内容会保留</view>
+          </view>
+          <view class="space-row-arrow">›</view>
+        </view>
+        <view wx:else class="space-hint">你是空间最后一名成员，不能直接离开并遗弃已有数据。如需加入别人的空间，先在这里两次确认注销原空间。开始清理后不能撤销。</view>
+        <view wx:if="{{deletionView.mode === 'normal'}}" class="space-row-action space-row-danger" bindtap="requestDeletion" hover-class="ux-pressed" hover-stay-time="80">
+          <view>
+            <view class="space-row-action-title">申请注销共同空间</view>
+            <view class="space-row-action-note">单人空间两次确认后直接清理；双人空间还须对方同意</view>
+          </view>
+          <view class="space-row-arrow">›</view>
+        </view>
+      </view>
+    </view>
+    </block>
+  </block>
+</view>

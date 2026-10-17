@@ -1,0 +1,19 @@
+.picker-value { display: flex; justify-content: space-between; box-sizing: border-box; width: 100%; padding: 16rpx 18rpx; border-radius: 18rpx; color: var(--muted); background: var(--pink-pale); font-size: 26rpx; }
+.clear-plan-date { margin-top: 12rpx; color: #ca5c85; font-size: 22rpx; text-align: right; }
+.mission-memory-hero { height: 390rpx; border: 2rpx solid rgba(255,255,255,.95); background: linear-gradient(135deg,#f2fbf5,#fff5f9); }
+.mission-memory-hero::after { z-index: 1; background: linear-gradient(270deg,rgba(255,248,251,.98) 0%,rgba(255,248,251,.9) 44%,rgba(242,251,245,.08) 100%); }
+.mission-memory-hero .mission-memory-backdrop { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .4; }
+.mission-memory-tint { position: absolute; z-index: 1; inset: 0; background: radial-gradient(circle at 82% 20%,rgba(255,255,255,.96),transparent 35%); }
+.mission-memory-frame { position: absolute; z-index: 3; left: 23rpx; top: 25rpx; width: 270rpx; height: 340rpx; padding: 9rpx; border: 4rpx solid rgba(255,255,255,.96); border-radius: 30rpx 30rpx 10rpx 30rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(57,91,70,.18); box-sizing: border-box; transform: rotate(-1.2deg); }
+.mission-memory-frame .mission-memory-photo { display: block; width: 100%; height: 100%; border-radius: 22rpx 22rpx 7rpx 22rpx; background: #dfeadd; object-position: center; }
+.mission-memory-frame>text { position: absolute; right: -11rpx; bottom: -11rpx; display: flex; align-items: center; justify-content: center; width: 52rpx; height: 52rpx; border-radius: 50%; color: #fff; background: #6dbd84; box-shadow: 0 6rpx 16rpx rgba(82,164,104,.27); font-size: 24rpx; }
+.mission-memory-copy { position: absolute; z-index: 3; right: 25rpx; top: 73rpx; width: 340rpx; color: var(--navy); }
+.mission-memory-copy>text:first-child { color: #5f9c70; font-size: 16rpx; font-weight: 700; letter-spacing: 2rpx; }
+.mission-memory-copy>view { margin-top: 13rpx; font-size: 34rpx; font-weight: 850; line-height: 1.35; }
+.mission-memory-copy>text:last-child { display: block; margin-top: 18rpx; color: #8e96a5; font-size: 19rpx; }
+.mission-memory-star { position: absolute; z-index: 4; right: 18rpx; bottom: 15rpx; color: rgba(255,76,139,.5); font-size: 25rpx; }
+
+@media (max-width: 340px) {
+  .mission-memory-frame { left: 17rpx; width: 246rpx; }
+  .mission-memory-copy { width: 300rpx; }
+}

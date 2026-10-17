@@ -1,0 +1,4 @@
+<view wx:if="{{visible}}" class="xiaoba-launcher" bindtap="openXiaoBa" hover-class="xiaoba-launcher-pressed" role="button" aria-label="打开小八 AI 助手">
+  <xiaoba-mark size="launcher" />
+  <view class="xiaoba-name">小八</view><text class="xiaoba-star">✦</text>
+</view>

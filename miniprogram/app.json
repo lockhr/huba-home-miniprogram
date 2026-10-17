@@ -1,0 +1,75 @@
+{
+  "pages": [
+    "pages/Welcome/index",
+    "pages/MainPage/index",
+    "pages/Dinner/index",
+    "pages/DishAdd/index",
+    "pages/HouseRules/index",
+    "pages/Schedule/index",
+    "pages/Mission/index",
+    "pages/MissionAdd/index",
+    "pages/MissionDetail/index",
+    "pages/Market/index",
+    "pages/MarketAdd/index",
+    "pages/MarketDetail/index",
+    "pages/Account/index",
+    "pages/ItemDetail/index",
+    "pages/Records/index",
+    "pages/XiaoBa/index",
+    "pages/Setup/index",
+    "pages/Invite/index",
+    "pages/SpaceSetting/index",
+    "pages/Help/index",
+    "pages/ReviewEntry/index"
+  ],
+  "usingComponents": {
+    "page-heading": "/components/page-heading/index",
+    "feedback-state": "/components/feedback-state/index",
+    "xiaoba-orb": "/components/xiaoba-orb/index",
+    "xiaoba-mark": "/components/xiaoba-mark/index"
+  },
+  "window": {
+    "backgroundColor": "#fff8fb",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff1f6",
+    "navigationBarTitleText": "胡巴家长们",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#52698b",
+    "selectedColor": "#ff4c8b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [{
+      "pagePath": "pages/MainPage/index",
+      "selectedIconPath": "images/TabBar/HomeIconColor.png",
+      "iconPath": "images/TabBar/HomeIconGrey.png",
+      "text": "首页"
+    }, {
+      "pagePath": "pages/Mission/index",
+      "selectedIconPath": "images/TabBar/MissionIconColor.png",
+      "iconPath": "images/TabBar/MissionIconGrey.png",
+      "text": "任务"
+    },{
+      "pagePath": "pages/Market/index",
+      "selectedIconPath": "images/TabBar/MarketIconColor.png",
+      "iconPath": "images/TabBar/MarketIconGrey.png",
+      "text": "商城"
+    },{
+      "pagePath": "pages/Account/index",
+      "selectedIconPath": "images/TabBar/AccountIconColor.png",
+      "iconPath": "images/TabBar/AccountIconGrey.png",
+      "text": "仓库"
+    },{
+      "pagePath": "pages/Records/index",
+      "selectedIconPath": "images/TabBar/RecordsIconColor.png",
+      "iconPath": "images/TabBar/RecordsIconGrey.png",
+      "text": "记录"
+    }]
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "cloud": true,
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

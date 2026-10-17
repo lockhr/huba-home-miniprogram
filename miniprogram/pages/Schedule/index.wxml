@@ -1,0 +1,120 @@
+<view class="ux-page schedule-page accent-{{accent}}">
+  <view class="schedule-hero" style="padding-top: {{heroTop}}px; height: {{heroTop + 132}}px;">
+    <view class="schedule-back" style="top: {{navTop}}px;" bindtap="goBack" role="button" aria-label="返回" hover-class="ux-pressed" hover-stay-time="80">‹</view>
+    <view class="hero-bubble bubble-one">✦</view><view class="hero-bubble bubble-two">♡</view>
+    <view class="schedule-kicker">HUBA CAMPUS</view>
+    <view class="schedule-title">双人课表</view>
+    <view class="schedule-subtitle">{{subtitle}}</view>
+    <image class="schedule-hero-art" src="../../images/brand/decor-calendar.png" mode="aspectFit" />
+  </view>
+
+  <view class="schedule-content">
+    <view class="owner-switch" wx:if="{{members.length}}">
+      <view class="owner-option {{ownerIndex === index ? 'active' : ''}}" wx:for="{{members}}" wx:key="openid" data-index="{{index}}" bindtap="chooseOwner" hover-class="ux-pressed" hover-stay-time="80">
+        <image src="{{item.mascot}}" mode="aspectFit" /><view><text>{{item.name}}的课表</text><text>{{item.tagline}}</text></view>
+      </view>
+    </view>
+
+    <feedback-state loading="{{!scheduleLoaded && !scheduleLoadError}}" error="{{scheduleLoadError}}" label="正在读取课表…" bind:retry="loadSchedules" />
+    <view wx:if="{{members.length && canImport && scheduleLoaded}}">
+      <view class="schedule-import-compact" wx:if="{{hasMySchedule && !importExpanded}}" bindtap="expandImport" role="button" aria-label="重新上传我的课表" hover-class="ux-pressed" hover-stay-time="80">
+        <view class="schedule-import-compact-icon">📸</view><view><text>我的课表已保存</text><text>重新上传我的课表</text></view><text class="schedule-import-compact-arrow">›</text>
+      </view>
+      <view class="schedule-import-card" wx:else>
+        <view class="schedule-import-heading"><view><text class="schedule-import-kicker">MY TIMETABLE</text><view class="schedule-import-title">{{hasMySchedule ? '更新我的课表' : '拍张课表，轻松导入'}}</view></view><text class="schedule-import-icon">📸</text></view>
+        <view class="schedule-import-note">上传课表截图后先核对识别建议；如果结果乱了，可以直接按星期和节次点选有课。只有你确认后才会替换本人课表。</view>
+        <button class="schedule-import-pick" disabled="{{choosingImport || importing || savingImport}}" bindtap="chooseScheduleImage" hover-class="ux-pressed" hover-stay-time="80">{{importImagePath ? '换一张截图' : '选择课表截图'}}</button>
+        <view wx:if="{{importing}}" class="schedule-import-progress">正在识别这张课表，请稍候…</view>
+        <view wx:if="{{importError}}" class="schedule-import-error">{{importError}}</view>
+
+        <view wx:if="{{importRecognized}}" class="schedule-import-review">
+          <view class="schedule-import-review-head"><view>对照原图，确认我的课表</view><text>尚未保存</text></view>
+          <view class="schedule-import-warning">截图仅用于本次核对；识别建议可能错位或漏课，不会自动写入。保存成功前旧课表保持不变。</view>
+          <view class="schedule-import-image-preview" wx:if="{{importImagePath}}" bindtap="previewImportImage" role="button" aria-label="放大查看原课表截图" hover-class="ux-pressed" hover-stay-time="80">
+            <image src="{{importImagePath}}" mode="aspectFill" />
+            <view><text>原课表截图</text><text>点这里放大，对照检查漏课与时间 ›</text></view>
+          </view>
+          <view class="schedule-import-modes" role="group" aria-label="选择课表核对方式">
+            <view wx:if="{{importCourses.length}}" class="schedule-import-mode {{importMode === 'ocr' ? 'active' : ''}}" bindtap="useRecognizedImport" role="button" hover-class="ux-pressed" hover-stay-time="80">核对识别结果</view>
+            <view class="schedule-import-mode {{importMode === 'manual' ? 'active' : ''}}" bindtap="useManualImport" role="button" hover-class="ux-pressed" hover-stay-time="80">识别乱了？手动点选</view>
+          </view>
+          <view class="schedule-import-term-row"><text>学期</text><input class="schedule-import-term" value="{{importTerm}}" maxlength="32" placeholder="填写学期" bindinput="setImportTerm" /></view>
+          <view wx:if="{{importMode === 'ocr'}}">
+          <view class="schedule-import-warning">识别出 {{importCourses.length}} 门候选课程{{importSkipped ? '，部分格子可能漏识别' : ''}}。请核对星期、课程、时间和周次；有误时点课程修改。</view>
+          <view class="schedule-review-day" wx:for="{{reviewDays}}" wx:for-item="dayGroup" wx:key="value">
+            <view class="schedule-review-day-label"><text>{{dayGroup.label}}</text><text>{{dayGroup.courses.length}} 门</text></view>
+            <view class="schedule-import-course" wx:for="{{dayGroup.courses}}" wx:for-item="course" wx:key="index">
+              <view class="schedule-review-course-main" data-index="{{course.index}}" bindtap="toggleImportCourse" role="button" aria-label="查看或修改课程" hover-class="ux-pressed" hover-stay-time="80">
+                <view class="schedule-review-course-time">{{course.time || course.period || '时间待核对'}}</view>
+                <view class="schedule-review-course-copy"><text>{{course.title || '课程名称待填写'}}</text><text>{{course.time && course.period ? course.period + ' · ' : ''}}{{course.weeks || '周次待核对'}}{{course.place ? ' · ' + course.place : ''}}{{course.teacher ? ' · ' + course.teacher : ''}}</text></view>
+                <text class="schedule-review-course-edit">{{importEditingIndex === course.index ? '收起' : '修改'}}</text>
+              </view>
+              <view class="schedule-import-fields" wx:if="{{importEditingIndex === course.index}}">
+                <picker range="{{days}}" range-key="label" value="{{course.day - 1}}" data-index="{{course.index}}" bindchange="updateImportDay"><view class="schedule-import-day">{{dayGroup.label}} ⌄</view></picker>
+                <input value="{{course.title}}" maxlength="60" placeholder="课程名称（必填）" data-index="{{course.index}}" data-field="title" bindinput="updateImportCourse" />
+                <input value="{{course.time}}" maxlength="40" placeholder="时间，如 08:00-09:35" data-index="{{course.index}}" data-field="time" bindinput="updateImportCourse" />
+                <input value="{{course.period}}" maxlength="40" placeholder="节次" data-index="{{course.index}}" data-field="period" bindinput="updateImportCourse" />
+                <input value="{{course.weeks}}" maxlength="80" placeholder="周次" data-index="{{course.index}}" data-field="weeks" bindinput="updateImportCourse" />
+                <input value="{{course.place}}" maxlength="60" placeholder="教室" data-index="{{course.index}}" data-field="place" bindinput="updateImportCourse" />
+                <input value="{{course.teacher}}" maxlength="50" placeholder="教师" data-index="{{course.index}}" data-field="teacher" bindinput="updateImportCourse" />
+                <view class="schedule-import-remove" data-index="{{course.index}}" bindtap="removeImportCourse" hover-class="ux-pressed" hover-stay-time="80">移除这门课</view>
+              </view>
+            </view>
+          </view>
+          <view class="schedule-import-add" bindtap="addImportCourse" hover-class="ux-pressed" hover-stay-time="80">＋ 漏了一门？手动补充</view>
+          </view>
+          <view wx:if="{{importMode === 'manual'}}" class="schedule-manual">
+            <view class="schedule-manual-title">只标记有课的时间</view>
+            <view class="schedule-import-warning">先选星期，再点对应的大节。未点亮的格子不会保存为课程；周次尚未核对，不能据此判断某个具体日期一定有空。</view>
+            <scroll-view class="schedule-manual-days" scroll-x="true" show-scrollbar="false"><view class="schedule-manual-days-inner">
+              <view wx:for="{{days}}" wx:key="value" class="schedule-manual-day {{manualSelectedDay === item.value ? 'active' : ''}}" data-day="{{item.value}}" bindtap="selectManualDay" role="button" hover-class="ux-pressed" hover-stay-time="80">{{item.label}}</view>
+            </view></scroll-view>
+            <view class="schedule-manual-slots">
+              <view wx:for="{{manualPeriodItems}}" wx:key="value" class="schedule-manual-slot {{item.selected ? 'active' : ''}}" data-period="{{item.value}}" bindtap="toggleManualBlock" role="button" aria-label="{{item.label}} {{item.selected ? '已选' : '未选'}}" hover-class="ux-pressed" hover-stay-time="80">
+                <text>{{item.label}}</text><text>{{item.selected ? '✓ 有课' : '点亮有课'}}</text>
+              </view>
+            </view>
+            <view class="schedule-manual-count">已标记 {{manualBlocks.length}} 个忙碌节次，可切换星期继续标记</view>
+          </view>
+          <view class="schedule-import-warning schedule-import-save-note">确认后只替换我的课表，不会改动对方课表；原截图不作为课表保存。</view>
+          <button class="schedule-import-save" disabled="{{savingImport || (importMode === 'manual' ? !manualBlocks.length : !importCourses.length)}}" loading="{{savingImport}}" bindtap="confirmImport" hover-class="ux-pressed" hover-stay-time="80">{{hasMySchedule ? '确认替换我的课表' : '确认导入我的课表'}}</button>
+        </view>
+        <view wx:if="{{hasMySchedule || importImagePath}}" class="schedule-import-cancel" bindtap="cancelImport" hover-class="ux-pressed" hover-stay-time="80">暂不导入，返回课表</view>
+      </view>
+    </view>
+
+    <view wx:if="{{scheduleLoaded}}">
+    <scroll-view class="day-strip" scroll-x="true" enhanced="true" show-scrollbar="false">
+      <view class="day-strip-inner">
+        <view class="day-chip {{selectedDay === item.value ? 'active' : ''}}" wx:for="{{days}}" wx:key="value" data-day="{{item.value}}" bindtap="chooseDay" hover-class="ux-pressed" hover-stay-time="80"><text>周</text><text>{{item.short}}</text></view>
+      </view>
+    </scroll-view>
+
+    <view class="day-summary">
+      <view><text class="summary-dot"></text><text>{{ownerName}} · {{selectedDayLabel}}</text></view>
+      <text>{{courses.length ? courses.length + ' 个课程安排' : '这天暂无课程'}}</text>
+    </view>
+
+    <view class="course-list" wx:if="{{courses.length}}">
+      <view class="course-card course-tone-{{index % 5}}" wx:for="{{courses}}" wx:key="displayKey">
+        <view class="course-time"><text wx:if="{{item.time}}">{{item.time}}</text><text>{{item.period}}</text></view>
+        <view class="course-divider"><text></text></view>
+        <view class="course-copy">
+          <view class="course-top"><text class="course-title">{{item.title}}</text><text wx:if="{{item.weeks}}" class="course-week">{{item.weeks}}</text></view>
+          <view class="course-meta" wx:if="{{item.place || item.teacher}}"><text wx:if="{{item.place}}">📍 {{item.place}}</text><text wx:if="{{item.teacher}}">👩🏻‍🏫 {{item.teacher}}</text></view>
+        </view>
+        <text class="course-sparkle">✦</text>
+      </view>
+    </view>
+
+    <view class="empty-schedule" wx:else>
+      <image src="../../images/brand/empty-storage.png" mode="aspectFit" />
+      <view>{{enabled ? '这天暂无课程' : emptyTitle}}</view><text>{{enabled ? '一起留一点时间给生活 ♡' : emptyNote}}</text>
+    </view>
+
+    <view wx:if="{{enabled}}" class="schedule-note"><text>🗓️</text><view><view>示例作息 · 当前执行夏令时</view><text>第4大节 14:30、第7大节 19:10 仅供参考；实际周次、时间和教室请以学校课表为准。</text></view></view>
+    </view>
+  </view>
+</view>
+
+<xiaoba-orb />

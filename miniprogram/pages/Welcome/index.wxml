@@ -1,0 +1,40 @@
+<view class="ux-page welcome-page">
+  <view class="welcome-glow welcome-glow-one"></view>
+  <view class="welcome-glow welcome-glow-two"></view>
+
+  <view class="welcome-shell">
+    <view class="welcome-brand">
+      <view class="welcome-eyebrow">HUBA HOME</view>
+      <view class="welcome-title">胡巴家长们</view>
+      <view class="welcome-subtitle">把两个人的小事，认真放在一起</view>
+    </view>
+
+    <view class="welcome-picture">
+      <image class="welcome-hero" src="../../images/brand/hero-home.jpg" mode="aspectFill" />
+      <view class="welcome-picture-tag">OUR LITTLE HOME · ♡</view>
+    </view>
+
+    <view wx:if="{{status === 'loading'}}" class="welcome-state" aria-live="polite">
+      <view class="welcome-loader"><view></view><view></view><view></view></view>
+      <view class="welcome-state-title">正在找到你们的小屋</view>
+      <view class="welcome-state-note">只确认当前微信账号和空间状态，不会修改任何内容</view>
+    </view>
+
+    <view wx:elif="{{status === 'welcome'}}" class="welcome-state welcome-state-ready">
+      <view class="welcome-state-title">第一次来，可以先随便看看</view>
+      <view class="welcome-state-note">示例空间可以浏览首页、任务、商城、仓库和记录，不会创建账号，也不会读取你的真实资料。</view>
+      <button class="welcome-primary" bindtap="browseDemo" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80"><text>先看看示例空间</text></button>
+      <button class="welcome-secondary" bindtap="startOnboarding" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80"><text>创建或加入自己的空间</text></button>
+      <view class="welcome-privacy-note">浏览示例不需要手机号，也不会读取微信头像或微信昵称</view>
+      <view wx:if="{{inviteToken}}" class="welcome-invite-note">已为你保留伴侣发来的邀请</view>
+    </view>
+
+    <view wx:elif="{{status === 'error'}}" class="welcome-state welcome-state-error" aria-live="assertive">
+      <view class="welcome-error-mark">!</view>
+      <view class="welcome-state-title">这次没有连接成功</view>
+      <view class="welcome-state-note">{{error}}</view>
+      <button class="welcome-primary" bindtap="retryLoad" loading="{{busy}}" disabled="{{busy}}" hover-class="ux-pressed" hover-stay-time="80"><text>{{busy ? '正在重新加载…' : '重新加载'}}</text></button>
+      <view class="welcome-safe-note">失败不会创建新账号，也不会改动原来的空间和数据</view>
+    </view>
+  </view>
+</view>

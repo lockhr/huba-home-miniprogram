@@ -1,0 +1,4 @@
+.heading { box-sizing: border-box; padding-right: 28rpx; padding-left: 32rpx; }
+.heading-title { color: #243b50; font-size: 42rpx; font-weight: 800; line-height: 1.3; letter-spacing: 1rpx; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.heading-subtitle { margin-top: 8rpx; color: #748091; font-size: 23rpx; line-height: 1.5; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+:host { display: block; }

@@ -1,0 +1,10 @@
+<view wx:if="{{!hidden}}" class="tabbar-shell">
+  <view class="tabbar-frame">
+    <view wx:for="{{list}}" wx:key="pagePath" class="tabbar-item {{selected === index ? 'tabbar-item-active' : ''}}" data-index="{{index}}" data-path="{{item.pagePath}}" bindtap="switchTab" role="button" aria-label="{{item.text}}" aria-current="{{selected === index ? 'page' : 'false'}}" hover-class="tabbar-pressed" hover-stay-time="80">
+      <view class="tabbar-icon-wrap">
+        <image class="tabbar-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" mode="aspectFit" />
+      </view>
+      <text class="tabbar-label">{{item.text}}</text>
+    </view>
+  </view>
+</view>

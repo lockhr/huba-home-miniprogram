@@ -1,0 +1,14 @@
+<wxs module="util" src="../util.wxs" />
+<view class="ux-page subpage-shell">
+  <view class="subpage-hero"><image src="{{appearance.market}}" mode="aspectFill" /><view class="subpage-hero-title">把喜欢的奖励带回家</view></view>
+  <view class="detail-feedback"><feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取详情…" bind:retry="loadDetail" /></view>
+  <view wx:if="{{item}}" class="form-group detail-card">
+    <view class="form-cell"><view class="detail-label">📌 商品名称</view><view class="detail-value detail-highlight">{{item.title}}</view></view>
+    <view class="form-cell"><view class="detail-label">💡 购买关系</view><view class="detail-value">此商品由{{from}}上架，由{{to}}购买。</view></view>
+    <view class="form-cell"><view class="detail-label">💰 商品价值：<text class="detail-highlight">{{item.credit}}</text> 积分</view><progress percent="{{creditPercent}}" border-radius="8" font-size="8" duration="10" color="#ff6d9c" active stroke-width="9" /><view class="progress-caption">最高 {{maxCredit}} 积分</view></view>
+    <view class="form-cell"><view class="detail-label">📅 创建日期</view><view class="detail-value">{{dateStr}} · {{util.cutStr(timeStr, 8)}}</view></view>
+    <view class="form-cell"><view class="detail-label">📝 商品详情</view><view class="detail-value">{{item.desc || '还没有补充说明'}}</view></view>
+  </view>
+</view>
+
+<xiaoba-orb />

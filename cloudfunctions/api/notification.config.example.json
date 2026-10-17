@@ -1,0 +1,13 @@
+{
+  "enabled": false,
+  "templateId": "",
+  "page": "pages/MainPage/index",
+  "miniprogramState": "trial",
+  "lang": "zh_CN",
+  "fields": {
+    "event": "thing1",
+    "actor": "name2",
+    "time": "time3",
+    "detail": "thing4"
+  }
+}

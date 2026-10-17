@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            miniprogram/package-lock.json
+            cloudfunctions/api/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm ci --ignore-scripts
+        working-directory: miniprogram
+      - run: npm ci --ignore-scripts
+        working-directory: cloudfunctions/api
+      - run: npm test
+      - run: npm run check
+      - run: npm run check:deployment
+      - run: npm run check:public

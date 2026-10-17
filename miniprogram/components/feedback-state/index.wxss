@@ -1,0 +1,9 @@
+.feedback { display: flex; align-items: center; gap: 18rpx; box-sizing: border-box; margin: 22rpx 0; padding: 22rpx; border: 2rpx solid #f0e4e9; border-radius: 24rpx; color: #677789; background: #fffafd; font-size: 24rpx; line-height: 1.65; }
+.feedback-copy { min-width: 0; flex: 1; word-break: break-all; }
+.feedback-error { color: #97516b; background: #fff4f7; border-color: #efd4de; }
+.spinner { flex: none; box-sizing: border-box; width: 30rpx; height: 30rpx; border: 3rpx solid #f5dce6; border-top-color: #ce618b; border-radius: 50%; animation: spin 900ms linear infinite; }
+.error-mark { display: flex; align-items: center; justify-content: center; flex: none; width: 34rpx; height: 34rpx; border-radius: 50%; color: #9d4968; background: #fbe3ec; font-weight: 700; }
+.retry { display: flex; align-items: center; justify-content: center; flex: none; min-width: 94rpx; min-height: 76rpx; margin: 0; padding: 0 18rpx; border-radius: 18rpx; color: #a6446a; background: #fff; font-size: 24rpx; line-height: 1.3; }
+.retry::after { border: 0; }.pressed { opacity: .72; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }

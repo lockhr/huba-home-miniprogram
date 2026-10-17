@@ -1,0 +1,10 @@
+{
+  "name": "huba-home-api",
+  "version": "0.1.0",
+  "description": "胡巴家长们微信云开发统一业务云函数",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "wx-server-sdk": "4.0.2"
+  }
+}

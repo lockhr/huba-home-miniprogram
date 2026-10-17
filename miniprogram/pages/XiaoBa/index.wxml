@@ -1,0 +1,36 @@
+<view class="ux-page xiaoba-page">
+  <view class="xiaoba-atmosphere"><view class="aurora aurora-a"></view><view class="aurora aurora-b"></view><text class="sky-star star-one">✦</text><text class="sky-star star-two">♡</text></view>
+  <view class="xiaoba-header" style="padding-top: {{headerTop}}px; height: {{headerHeight}}px;">
+    <view class="header-action" bindtap="goBack" role="button" aria-label="返回" hover-class="ux-pressed" hover-stay-time="80">‹</view>
+    <view class="assistant-id"><view class="assistant-avatar"><xiaoba-mark size="header" online /></view><view><view>小八</view><text>你们的生活小助手</text></view></view>
+    <view class="header-action clear-action" bindtap="clearConversation" role="button" aria-label="清空对话" hover-class="ux-pressed" hover-stay-time="80">清空</view>
+  </view>
+
+  <view class="xiaoba-intro">
+    <view class="intro-mark"><xiaoba-mark size="intro" /><text>AI</text></view>
+    <view class="intro-copy"><view class="intro-kicker">HUBA LITTLE HELPER</view><view class="intro-title">有事就喊小八</view><view class="intro-note">课表、约会、任务和心情，我陪你们慢慢商量。</view></view>
+    <text class="intro-flower">✿</text><text class="intro-heart">♡</text>
+  </view>
+
+  <scroll-view class="chat-scroll" scroll-y enhanced show-scrollbar="{{false}}" scroll-into-view="{{scrollTarget}}">
+    <scroll-view class="quick-prompts" scroll-x enhanced show-scrollbar="{{false}}"><view class="quick-prompts-row">
+      <view wx:for="{{quickPrompts}}" wx:key="*this" data-prompt="{{item}}" bindtap="choosePrompt" hover-class="ux-pressed" hover-stay-time="80"><text>{{index === 0 ? '⌁' : index === 1 ? '☾' : index === 2 ? '✦' : '♡'}}</text>{{item}}</view>
+    </view></scroll-view>
+    <view class="message-list">
+      <view wx:for="{{messages}}" wx:key="id" id="message-{{item.id}}" class="message-row {{item.role}}">
+        <view wx:if="{{item.role === 'assistant'}}" class="message-mini-avatar"><xiaoba-mark size="message" /></view>
+        <view class="message-wrap"><view class="message-bubble">{{item.content}}</view><text>{{item.role === 'assistant' ? '小八' : '我'}} · {{item.time}}</text></view>
+      </view>
+      <view wx:if="{{sending}}" class="message-row assistant typing-row"><view class="message-mini-avatar"><xiaoba-mark size="message" /></view><view class="message-wrap"><view class="message-bubble typing"><view class="typing-dot"></view><view class="typing-dot"></view><view class="typing-dot"></view></view><text>小八正在想</text></view></view>
+      <view class="scroll-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <view class="composer-shell" style="bottom: {{keyboardHeight}}px;">
+    <view class="privacy-line"><text>♡</text> 提问与相关空间摘要会交给第三方 AI 生成回复</view>
+    <view class="composer">
+      <textarea auto-height maxlength="500" value="{{inputText}}" bindinput="setInput" bindblur="handleComposerBlur" adjust-position="{{false}}" cursor-spacing="18" bindkeyboardheightchange="handleKeyboardHeightChange" confirm-type="send" bindconfirm="sendMessage" placeholder="和小八说点什么…" placeholder-class="composer-placeholder" />
+      <view class="send-button {{sending || !inputText ? 'disabled' : ''}}" bindtap="sendMessage" hover-class="ux-pressed" hover-stay-time="80"><text>↑</text></view>
+    </view>
+  </view>
+</view>

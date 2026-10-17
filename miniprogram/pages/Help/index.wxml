@@ -1,0 +1,63 @@
+<view class="ux-page guide-page">
+  <view class="guide-cover">
+    <view class="guide-edition">PUBLIC BETA · GUIDE 01</view>
+    <view class="guide-title">两个人，<text>一个空间</text></view>
+    <view class="guide-lead">从当前微信身份开始，把邀请、日常记录和共同数据放进一间只属于你们的小屋。</view>
+    <view class="guide-seal">使用说明</view>
+  </view>
+
+  <view class="guide-section">
+    <view class="guide-number">01</view>
+    <view class="guide-heading">第一次进入</view>
+    <view class="guide-copy">可以先浏览不读取真实资料的示例空间。创建或加入自己的空间时，只需填写自定义昵称并确认当前微信身份用途；一个微信账号同一时间只能加入一个空间，头像进入空间后可按需更换。</view>
+  </view>
+
+  <view class="journey-card">
+    <view class="journey-step"><text>1</text><view><view>创建空间</view><text>填写名称，纪念日可以先跳过。</text></view></view>
+    <view class="journey-line"></view>
+    <view class="journey-step"><text>2</text><view><view>发送邀请码</view><text>体验版优先复制邀请码，通过普通微信消息发送。</text></view></view>
+    <view class="journey-line"></view>
+    <view class="journey-step"><text>3</text><view><view>伴侣确认加入</view><text>双方配对后，任务、积分、记录和照片才开始共享。</text></view></view>
+  </view>
+
+  <view class="guide-section">
+    <view class="guide-number">02</view>
+    <view class="guide-heading">日常怎么用</view>
+    <view class="feature-strip"><text>任务与积分</text><text>共同记录</text><text>点菜与愿望</text><text>伴侣提醒</text></view>
+    <view class="guide-copy">每对情侣的数据按空间隔离。小八只在完成双人配对、空间正常并开启 AI 功能后出现；每天有次数限制，用完不会影响其他功能。</view>
+  </view>
+
+  <view class="guide-section">
+    <view class="guide-number">03</view>
+    <view class="guide-heading">离开和注销不是一回事</view>
+    <view class="compare-grid">
+      <view class="compare-card leave-card">
+        <view class="compare-tag">只影响我</view>
+        <view class="compare-title">离开空间</view>
+        <view class="compare-copy">你失去原空间访问权，对方和共同数据继续保留；之后可以创建或加入其他空间。</view>
+      </view>
+      <view class="compare-card delete-card">
+        <view class="compare-tag">影响双方</view>
+        <view class="compare-title">注销共同空间</view>
+        <view class="compare-copy">单人空间两次确认后清理；双人空间须另一方同意。删除开始后不能撤销或恢复。</view>
+      </view>
+    </view>
+    <view class="guide-copy">注销个人账号只在你已没有空间时开放：从“创建或加入”页进入“账号与安全”，连续确认两次。它会删除当前微信身份的个人账号资料，下次打开重新走首次使用；若对方仍保留原空间，不会代替对方删除共同数据。</view>
+  </view>
+
+  <view class="privacy-note">
+    <view class="privacy-mark">◎</view>
+    <view><view class="privacy-title">隐私与数据隔离</view><view class="privacy-copy">身份由微信安全识别，客户端不能冒充其他人。任务、记录、照片和小八上下文只读取当前空间，不会混入其他情侣的数据。课表截图仅在你选择并同意后用于腾讯云表格识别；识别草稿由你确认后才写入本人课表，临时截图识别后会清理。</view></view>
+  </view>
+
+  <view class="guide-section faq-section">
+    <view class="guide-number">04</view>
+    <view class="guide-heading">常见问题</view>
+    <view wx:for="{{faqs}}" wx:key="question" class="faq-item" data-index="{{index}}" bindtap="toggleFaq" hover-class="ux-pressed" hover-stay-time="80">
+      <view class="faq-question"><text>{{item.question}}</text><text>{{openFaq === index ? '−' : '+'}}</text></view>
+      <view wx:if="{{openFaq === index}}" class="faq-answer">{{item.answer}}</view>
+    </view>
+  </view>
+
+  <view class="guide-footer">HU BA PARENTS · 让共同生活有迹可循</view>
+</view>

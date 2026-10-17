@@ -1,0 +1,7 @@
+.xiaoba-launcher { position: fixed; z-index: 880; left: 28rpx; bottom: calc(172rpx + env(safe-area-inset-bottom)); display: flex; align-items: center; width: 138rpx; height: 72rpx; padding: 7rpx 14rpx 7rpx 8rpx; border: 3rpx solid rgba(255,255,255,.97); border-radius: 38rpx; background: linear-gradient(135deg,rgba(255,255,255,.98),rgba(255,243,247,.97)); box-shadow: 0 11rpx 27rpx rgba(169,92,119,.15), inset 0 1rpx 0 rgba(255,255,255,.9); box-sizing: border-box; transition: transform 150ms ease, opacity 150ms ease; }
+.xiaoba-launcher-pressed { opacity: .86; transform: scale(.95); }
+.xiaoba-name { flex: 1; color: #724b5c; font-size: 19rpx; font-weight: 850; text-align: center; letter-spacing: 1rpx; }.xiaoba-star { position: absolute; right: 7rpx; top: -7rpx; color: #e9ad55; font-size: 17rpx; animation: xiaoba-twinkle 1.9s ease-in-out infinite; }
+@keyframes xiaoba-twinkle { 0%,100% { opacity: .55; transform: scale(.85) rotate(0); } 50% { opacity: 1; transform: scale(1.12) rotate(15deg); } }
+.xiaoba-star { animation: none; }
+.xiaoba-name { font-size: 22rpx; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .xiaoba-launcher { transition: none; } }

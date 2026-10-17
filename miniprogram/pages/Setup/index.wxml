@@ -1,0 +1,87 @@
+<view class="ux-page subpage-shell">
+  <view class="space-hero">
+    <view class="space-hero-title">欢迎来到胡巴家长们</view>
+    <view class="space-hero-note">{{renderStatus === 'ready' && step === 'profile' ? '先取一个昵称，再把你们两个人的小空间建起来' : '把两个人的小事，认真放在一起'}}</view>
+  </view>
+
+  <view wx:if="{{renderStatus === 'ready' && error}}" class="space-alert">{{error}}</view>
+
+  <view wx:if="{{renderStatus === 'loading' || renderStatus === 'redirecting'}}" class="space-status-card">正在确认当前微信账号…</view>
+  <view wx:elif="{{renderStatus === 'error'}}" class="space-status-card">
+    <view class="space-status-title">暂时无法确认账号状态</view>
+    <view class="space-status-note">{{error}}。这次不会创建账号，也不会修改原空间。</view>
+    <button class="space-submit" bindtap="retryLoad" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">重新加载</button>
+  </view>
+
+  <block wx:elif="{{renderStatus === 'ready' && step === 'profile'}}">
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">你的昵称</view>
+        <input disabled="{{busy}}" class="form-cell_input" maxlength="12" value="{{displayName}}" bindinput="setDisplayName" placeholder="1 到 12 个字" placeholder-class="form-cell_placeholder" />
+        <view class="space-hint">这段昵称会显示给对方，之后可以在空间设置里修改</view>
+      </view>
+      <view class="identity-notice" bindtap="toggleIdentityNotice" role="checkbox" aria-checked="{{identityNoticeAccepted}}" hover-class="ux-pressed" hover-stay-time="80">
+        <view class="identity-check {{identityNoticeAccepted ? 'identity-check-active' : ''}}">{{identityNoticeAccepted ? '✓' : ''}}</view>
+        <view class="identity-copy">
+          <view class="identity-title">使用当前微信身份继续</view>
+          <view class="identity-note">微信会用当前账号识别你的空间；一个微信账号同一时间只能加入一个空间。这里不会读取你的微信昵称或微信头像。</view>
+        </view>
+      </view>
+    </view>
+    <button class="space-submit" bindtap="goChoice" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">下一步</button>
+  </block>
+
+  <block wx:elif="{{renderStatus === 'ready' && step === 'choice'}}">
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">接下来做什么</view>
+        <view class="space-choice" bindtap="chooseCreate" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="space-choice-title">创建一个新空间</view>
+          <view class="space-choice-note">建好之后把邀请发给伴侣，两个人共用一个空间</view>
+        </view>
+        <view class="space-choice" bindtap="chooseJoin" hover-class="ux-pressed" hover-stay-time="80">
+          <view class="space-choice-title">加入伴侣的邀请</view>
+          <view class="space-choice-note">需要对方先把邀请卡片发给你</view>
+        </view>
+      </view>
+    </view>
+    <view class="space-back" bindtap="backToProfile" hover-class="ux-pressed" hover-stay-time="80">返回上一步</view>
+  </block>
+
+  <block wx:elif="{{renderStatus === 'ready' && step === 'create'}}">
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">空间名称</view>
+        <input disabled="{{busy}}" class="form-cell_input" maxlength="20" value="{{spaceName}}" bindinput="setSpaceName" placeholder="例如：我们的小屋" placeholder-class="form-cell_placeholder" />
+      </view>
+      <view class="form-cell">
+        <view class="form-cell_title">纪念日（可以先跳过）</view>
+        <picker disabled="{{busy}}" mode="date" value="{{anniversaryDate}}" end="{{today}}" bindchange="setAnniversary">
+          <view class="form-cell_input space-date">{{anniversaryDate ? anniversaryDate : '还没有填写，点这里选择'}}</view>
+        </picker>
+        <view wx:if="{{anniversaryDate}}" class="space-clear" bindtap="clearAnniversary" hover-class="ux-pressed" hover-stay-time="80">清除纪念日</view>
+      </view>
+    </view>
+    <button class="space-submit {{busy ? 'space-submit-busy' : ''}}" bindtap="submitCreate" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">{{busy ? '正在创建…' : '创建我们的空间'}}</button>
+    <view class="space-back" bindtap="backToChoice" hover-class="ux-pressed" hover-stay-time="80">返回上一步</view>
+  </block>
+
+  <block wx:elif="{{renderStatus === 'ready' && step === 'join'}}">
+    <view class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">粘贴伴侣发来的邀请码</view>
+        <input disabled="{{busy}}" class="form-cell_input" maxlength="256" value="{{joinInviteToken}}" bindinput="setJoinInviteToken" placeholder="长按输入框粘贴邀请码" placeholder-class="form-cell_placeholder" />
+        <view class="space-hint">体验版不能直接分享时，让对方在空间设置里复制邀请码，再通过普通微信消息发给你。</view>
+      </view>
+    </view>
+    <button class="space-submit {{busy ? 'space-submit-busy' : ''}}" bindtap="submitJoin" hover-class="ux-pressed" hover-stay-time="80" disabled="{{busy}}" loading="{{busy}}">{{busy ? '正在保存…' : '查看这条邀请'}}</button>
+    <view class="space-back" bindtap="backToChoice" hover-class="ux-pressed" hover-stay-time="80">返回选择</view>
+  </block>
+  <view wx:if="{{renderStatus === 'ready' && accountRegistered && (step === 'profile' || step === 'choice')}}" class="space-account-entry" bindtap="openAccountSecurity" hover-class="ux-pressed" hover-stay-time="80">
+    <view>
+      <view class="space-account-entry-title">账号与安全</view>
+      <view class="space-account-entry-note">当前账号已无空间，可在这里注销个人账号，重新体验首次使用</view>
+    </view>
+    <text class="space-account-entry-arrow">›</text>
+  </view>
+</view>

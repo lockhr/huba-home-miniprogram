@@ -1,0 +1,15 @@
+<view class="xiaoba-mark xiaoba-mark-{{size}}" aria-hidden="true">
+  <view class="xiaoba-halo"></view>
+  <view class="xiaoba-ear xiaoba-ear-left"><view class="xiaoba-ear-inner"></view></view>
+  <view class="xiaoba-ear xiaoba-ear-right"><view class="xiaoba-ear-inner"></view></view>
+  <view class="xiaoba-face">
+    <view class="xiaoba-fringe"></view>
+    <view class="xiaoba-eye xiaoba-eye-left"><view class="xiaoba-eye-light"></view></view>
+    <view class="xiaoba-eye xiaoba-eye-right"><view class="xiaoba-eye-light"></view></view>
+    <view class="xiaoba-blush xiaoba-blush-left"></view>
+    <view class="xiaoba-blush xiaoba-blush-right"></view>
+    <view class="xiaoba-smile"></view>
+  </view>
+  <view class="xiaoba-sparkle">✦</view>
+  <view wx:if="{{online}}" class="xiaoba-online"></view>
+</view>

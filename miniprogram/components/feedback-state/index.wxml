@@ -1,0 +1,6 @@
+<view wx:if="{{loading || error}}" class="feedback {{error && !loading ? 'feedback-error' : ''}}" role="status" aria-live="polite">
+  <view wx:if="{{loading}}" class="spinner"></view>
+  <view wx:else class="error-mark">!</view>
+  <view class="feedback-copy">{{loading ? label : error}}</view>
+  <button wx:if="{{error && !loading}}" class="retry" hover-class="pressed" bindtap="retry">重试</button>
+</view>

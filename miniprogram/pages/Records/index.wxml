@@ -1,0 +1,91 @@
+<view class="ux-page page-shell records-page">
+  <page-heading title="胡巴记录册" subtitle="两个人的记录册 · 把心动与期待都留在这里 ♡" />
+  <view class="content-wrap records-content">
+    <view class="records-hero">
+      <view class="hero-copy"><view class="hero-kicker">HUBA MEMORY BOOK</view><view class="hero-title">我们的每一天</view><view class="hero-note">生活碎片和未来愿望，都值得被认真收藏</view></view>
+      <view class="hero-memory-frame">
+        <image class="hero-memory-photo" src="{{appearance.records}}" mode="{{appearanceDisplayCustom.records ? 'aspectFill' : 'aspectFit'}}" />
+        <view class="hero-photo-label">OUR LITTLE STORY</view>
+      </view>
+      <view class="hero-stamp">我<text>♡</text>你</view><text class="hero-sparkle sparkle-a">✦</text><text class="hero-sparkle sparkle-b">✿</text>
+    </view>
+
+    <feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取记录…" bind:retry="loadRecords" />
+    <view class="section-switch">
+      <view class="switch-item {{activeSection === 'world' ? 'active' : ''}}" data-section="world" bindtap="changeSection" hover-class="ux-pressed" hover-stay-time="80"><text>💌</text><view>我们的世界</view><text class="switch-sub">{{posts.length}} 条记录</text></view>
+      <view class="switch-item {{activeSection === 'wishes' ? 'active' : ''}}" data-section="wishes" bindtap="changeSection" hover-class="ux-pressed" hover-stay-time="80"><text>🎀</text><view>愿望清单</view><text class="switch-sub">{{pendingWishes.length}} 个期待</text></view>
+    </view>
+
+    <block wx:if="{{activeSection === 'world'}}">
+      <view class="world-heading"><view><view class="section-eyebrow">JUST FOR US</view><view class="section-title">只与你分享的生活碎片</view></view><text>🌸</text></view>
+      <view class="post-list" wx:if="{{posts.length}}">
+        <view wx:for="{{posts}}" wx:key="_id" class="post-card tone-{{item.tone}}">
+          <view class="post-top"><view class="post-avatar">{{item.initial}}</view><view class="post-author"><view>{{item.author}} <text>{{item._openid === currentOpenid ? '♡' : '✦'}}</text></view><text>{{item.dateText}}</text></view><view class="post-menu" data-id="{{item._id}}" bindtap="openPostMenu" hover-class="ux-pressed" hover-stay-time="80">•••</view></view>
+          <view class="post-content">{{item.content}}</view>
+          <view wx:if="{{item.imageUrl || item.imageFileId}}" class="post-media" data-src="{{item.imageUrl || item.imageFileId}}" bindtap="previewPostImage" hover-class="ux-pressed" hover-stay-time="80">
+            <image class="post-image-blur" src="{{item.imageUrl || item.imageFileId}}" mode="aspectFill" />
+            <image class="post-image" src="{{item.imageUrl || item.imageFileId}}" mode="aspectFit" />
+            <view class="post-image-tip">轻触查看完整照片</view>
+          </view>
+          <view wx:if="{{item.comments.length}}" class="comment-list"><view wx:for="{{item.comments}}" wx:for-item="comment" wx:key="id"><text>{{comment.author}}</text> {{comment.content}}</view></view>
+          <view class="post-actions"><view class="post-action {{item.liked ? 'liked' : ''}}" data-id="{{item._id}}" bindtap="toggleLike" hover-class="ux-pressed" hover-stay-time="80"><text>{{item.liked ? '♥' : '♡'}}</text>{{item.likeCount}}</view><view class="post-action" data-id="{{item._id}}" bindtap="addComment" hover-class="ux-pressed" hover-stay-time="80"><text>💬</text>{{item.comments.length}}</view><view class="post-keepsake">收藏这一刻 ✦</view></view>
+        </view>
+      </view>
+      <view class="records-empty" wx:elif="{{!loading && !loadError}}"><image src="../../images/brand/decor-letter.png" mode="aspectFit" /><view>我们的第一页还空着</view><text>写下一句话，或者放进一张今天的照片吧</text></view>
+    </block>
+
+    <block wx:else>
+      <view class="wish-heading"><view><view class="section-eyebrow">OUR LITTLE DREAMS</view><view class="section-title">我们想一起做的事</view></view><text>把期待写下来，再一起变成回忆 ♡</text></view>
+      <view class="wish-filter"><view class="{{wishFilter === 'pending' ? 'active' : ''}}" data-filter="pending" bindtap="changeWishFilter" hover-class="ux-pressed" hover-stay-time="80">待完成 <text>{{pendingWishes.length}}</text></view><view class="{{wishFilter === 'done' ? 'active' : ''}}" data-filter="done" bindtap="changeWishFilter" hover-class="ux-pressed" hover-stay-time="80">已完成 <text>{{completedWishes.length}}</text></view></view>
+      <view class="wish-list" wx:if="{{wishFilter === 'pending' ? pendingWishes.length : completedWishes.length}}">
+        <view wx:for="{{wishFilter === 'pending' ? pendingWishes : completedWishes}}" wx:key="_id" class="wish-card wish-tone-{{item.tone}} {{item.completed ? 'done' : ''}}" data-id="{{item._id}}" bindlongpress="deleteWish">
+          <view class="wish-icon">{{item.icon}}</view><view class="wish-copy"><view class="wish-title">{{item.title}}</view><view class="wish-meta">{{item.author}}发起 · {{item.dateText}}</view><view wx:if="{{item.note}}" class="wish-note">📍 {{item.note}}</view><view wx:if="{{item.imageUrl || item.imageFileId}}" class="wish-photo" data-src="{{item.imageUrl || item.imageFileId}}" catchtap="previewWishImage"><image src="{{item.imageUrl || item.imageFileId}}" mode="aspectFill" /><text>查看照片</text></view><view wx:if="{{item.completed}}" class="wish-finish">由 {{item.completedByName}} 一起完成 ✦</view></view>
+          <view class="wish-check {{item.completed ? 'checked' : ''}}" data-id="{{item._id}}" data-completed="{{item.completed}}" catchtap="toggleWish">{{item.completed ? '✓' : '＋'}}<text>{{item.completed ? '完成' : '去做'}}</text></view>
+        </view>
+      </view>
+      <view class="records-empty wish-empty" wx:elif="{{!loading && !loadError}}"><image src="../../images/brand/decor-diary.png" mode="aspectFit" /><view>{{wishFilter === 'pending' ? '暂时没有待完成的愿望' : '完成的愿望会在这里闪闪发光'}}</view><text>{{wishFilter === 'pending' ? '点右下角，一起约定下一件小美好' : '慢慢来，你们还有很多时间'}}</text></view>
+      <view class="wish-tip">长按自己创建的愿望可以删除</view>
+    </block>
+  </view>
+</view>
+
+<view wx:if="{{showPostEditor}}" class="editor-mask" style="padding-bottom: {{keyboardHeight}}px;" bindtap="closePostEditor" catchtouchmove="stopBubble">
+    <view class="editor-sheet post-editor" style="max-height: calc(100vh - {{keyboardHeight}}px - 20rpx);" catchtap="stopBubble">
+      <view class="sheet-handle"></view>
+      <view class="sheet-title"><view><text>💌</text> 收藏今天的小美好</view><text bindtap="closePostEditor">×</text></view>
+      <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="editor-scroll">
+        <view class="editor-scroll-content">
+          <textarea disabled="{{saving}}" maxlength="500" value="{{postContent}}" bindinput="setPostContent" adjust-position="{{false}}" cursor-spacing="24" bindkeyboardheightchange="handleKeyboardHeightChange" placeholder="今天有什么想告诉对方的？" placeholder-class="editor-placeholder" />
+          <view class="editor-count">{{postContent.length}} / 500</view>
+          <view class="post-photo-picker" bindtap="choosePostImage" hover-class="ux-pressed" hover-stay-time="80"><image wx:if="{{postImagePath}}" src="{{postImagePath}}" mode="aspectFit" /><view wx:else><text>📷</text><view>加一张照片</view><text class="photo-picker-note">相册或拍照都可以</text></view></view>
+          <view wx:if="{{postImagePath}}" class="remove-editor-photo" bindtap="removePostImage" hover-class="ux-pressed" hover-stay-time="80">移除照片</view>
+        </view>
+      </scroll-view>
+      <view class="sheet-actions"><button class="sheet-save {{saving ? 'disabled' : ''}}" disabled="{{saving}}" loading="{{saving}}" bindtap="savePost" hover-class="ux-pressed" hover-stay-time="80">{{saving ? '正在保存…' : '收藏这一刻 ♡'}}</button></view>
+    </view>
+  </view>
+
+<view wx:if="{{showWishEditor}}" class="editor-mask" style="padding-bottom: {{keyboardHeight}}px;" bindtap="closeWishEditor" catchtouchmove="stopBubble">
+    <view class="editor-sheet wish-editor" style="max-height: calc(100vh - {{keyboardHeight}}px - 20rpx);" catchtap="stopBubble">
+      <view class="sheet-handle"></view>
+      <view class="sheet-title"><view><text>🎀</text> 写下共同愿望</view><text bindtap="closeWishEditor">×</text></view>
+      <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="editor-scroll">
+        <view class="editor-scroll-content">
+          <view class="input-label first-label">给愿望选个小图标</view>
+          <view class="icon-picker"><view wx:for="{{wishIcons}}" wx:key="*this" class="{{wishIcon === item ? 'active' : ''}}" data-icon="{{item}}" bindtap="selectWishIcon" hover-class="ux-pressed" hover-stay-time="80">{{item}}</view></view>
+          <view class="input-label">想一起做什么</view>
+          <input disabled="{{saving}}" maxlength="30" value="{{wishTitle}}" bindinput="setWishTitle" adjust-position="{{false}}" cursor-spacing="24" bindkeyboardheightchange="handleKeyboardHeightChange" placeholder="例如：一起去看海边日出" placeholder-class="editor-placeholder" />
+          <view class="input-label">为什么想做</view>
+          <textarea disabled="{{saving}}" class="wish-note-input" maxlength="100" value="{{wishNote}}" bindinput="setWishNote" adjust-position="{{false}}" cursor-spacing="24" bindkeyboardheightchange="handleKeyboardHeightChange" placeholder="写下一句期待，未来看会很甜" placeholder-class="editor-placeholder" />
+          <view class="input-label">愿望照片（可选）</view>
+          <view class="wish-photo-picker" bindtap="chooseWishImage" hover-class="ux-pressed" hover-stay-time="80"><image wx:if="{{wishImagePath}}" src="{{wishImagePath}}" mode="aspectFill" /><view wx:else><text>📷</text><text>加一张期待的照片</text></view></view>
+          <view wx:if="{{wishImagePath}}" class="remove-editor-photo" bindtap="removeWishImage" hover-class="ux-pressed" hover-stay-time="80">移除照片</view>
+        </view>
+      </scroll-view>
+      <view class="sheet-actions"><button class="sheet-save {{saving ? 'disabled' : ''}}" disabled="{{saving}}" loading="{{saving}}" bindtap="saveWish" hover-class="ux-pressed" hover-stay-time="80">{{saving ? '正在添加…' : '放进愿望清单 ♡'}}</button></view>
+    </view>
+</view>
+
+<view class="create-action-capsule record-add" hover-class="create-action-active" role="button" aria-label="{{activeSection === 'world' ? '新增记录' : '新增愿望'}}" bindtap="openCreator"><view class="create-action-icon">＋</view><view class="create-action-copy"><text class="create-action-label">{{activeSection === 'world' ? '记录' : '愿望'}}</text><text>两个人的小记录</text></view></view>
+
+<xiaoba-orb />

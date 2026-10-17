@@ -1,0 +1,4 @@
+<view class="heading" style="height: {{height}}px; padding-top: {{top}}px;">
+  <view class="heading-title" style="max-width: {{copyWidth}}px;">{{title}}</view>
+  <view class="heading-subtitle">{{subtitle}}</view>
+</view>

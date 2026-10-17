@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "brand-header": "../../components/brand-header/index",
+    "mp-badge": "../../miniprogram_npm/weui-miniprogram/badge/badge",
+    "mp-slideview": "../../miniprogram_npm/weui-miniprogram/slideview/slideview"
+  }
+}

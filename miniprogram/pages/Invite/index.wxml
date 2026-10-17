@@ -1,0 +1,40 @@
+<view class="ux-page subpage-shell">
+  <view class="space-hero">
+    <view class="space-hero-title">有人邀请你加入空间</view>
+    <view class="space-hero-note">加入之后，你们两个人共用一个空间里的任务、积分、记录和照片</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="space-status-card">
+    <view class="space-status-title">正在读取邀请…</view>
+  </view>
+
+  <block wx:else>
+    <view class="space-status-card">
+      <view class="space-status-title">{{viewTitle}}</view>
+      <view wx:if="{{viewMessage}}" class="space-status-note">{{viewMessage}}</view>
+      <view wx:if="{{spaceName}}" class="space-invite-row">
+        <view class="space-invite-label">空间名称</view>
+        <view class="space-invite-value">{{spaceName}}</view>
+      </view>
+      <view wx:if="{{inviterName}}" class="space-invite-row">
+        <view class="space-invite-label">邀请人</view>
+        <view class="space-invite-value">{{inviterName}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{error}}" class="space-alert">{{error}}</view>
+
+    <view wx:if="{{status === 'missing' || status === 'expired' || status === 'used'}}" class="form-group">
+      <view class="form-cell">
+        <view class="form-cell_title">有新的邀请码？</view>
+        <input disabled="{{joining}}" class="form-cell_input" maxlength="256" value="{{inviteTokenInput}}" bindinput="setInviteTokenInput" placeholder="长按输入框粘贴邀请码" placeholder-class="form-cell_placeholder" />
+        <view class="space-hint">让伴侣从「空间与安全」复制邀请码发给你，不用创建新空间。</view>
+      </view>
+      <button class="space-submit" bindtap="retryWithInviteToken" hover-class="ux-pressed" hover-stay-time="80" disabled="{{joining}}" loading="{{joining}}">查看这条邀请</button>
+    </view>
+
+    <button wx:if="{{canJoin}}" class="space-submit {{joining ? 'space-submit-busy' : ''}}" bindtap="confirmJoin" hover-class="ux-pressed" hover-stay-time="80" disabled="{{joining}}" loading="{{joining}}">{{joining ? '正在加入…' : '确认加入这个空间'}}</button>
+    <view wx:elif="{{status === 'occupied'}}" class="space-plain-action" bindtap="goOwnSpace" hover-class="ux-pressed" hover-stay-time="80">去处理我当前的空间</view>
+    <view wx:else class="space-plain-action" bindtap="goSetup" hover-class="ux-pressed" hover-stay-time="80">返回创建或加入选择</view>
+  </block>
+</view>

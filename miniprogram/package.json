@@ -1,0 +1,14 @@
+{
+  "name": "huba-home-miniprogram-client",
+  "version": "0.1.0",
+  "description": "胡巴家长们微信小程序客户端",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "weui-miniprogram": "^1.0.8"
+  }
+}

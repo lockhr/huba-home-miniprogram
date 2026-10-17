@@ -1,0 +1,25 @@
+.xiaoba-mark { position: relative; display: block; flex: none; width: 52rpx; height: 52rpx; filter: drop-shadow(0 7rpx 10rpx rgba(181,96,126,.16)); }
+.xiaoba-mark-launcher { width: 54rpx; height: 54rpx; }
+.xiaoba-mark-header { width: 64rpx; height: 64rpx; }
+.xiaoba-mark-intro { width: 102rpx; height: 102rpx; }
+.xiaoba-mark-message { width: 52rpx; height: 52rpx; }
+.xiaoba-halo { position: absolute; inset: 5%; border: 2rpx solid rgba(255,255,255,.92); border-radius: 42% 42% 46% 46%; background: linear-gradient(145deg,#ffdce5 0%,#f7a8bb 57%,#ee91ad 100%); box-shadow: inset 0 4rpx 8rpx rgba(255,255,255,.52); }
+.xiaoba-ear { position: absolute; z-index: 1; top: 4%; width: 33%; height: 34%; overflow: hidden; border: 2rpx solid rgba(255,255,255,.9); background: #f7a8bb; box-sizing: border-box; }
+.xiaoba-ear-inner { position: absolute; inset: 27% 24% 17%; border-radius: 50% 50% 43% 43%; background: #ffe9ef; }
+.xiaoba-ear-left { left: 10%; border-radius: 72% 34% 62% 38%; transform: rotate(-18deg); }
+.xiaoba-ear-right { right: 10%; border-radius: 34% 72% 38% 62%; transform: rotate(18deg); }
+.xiaoba-face { position: absolute; z-index: 2; top: 20%; right: 9%; bottom: 7%; left: 9%; overflow: hidden; border: 2rpx solid rgba(255,255,255,.94); border-radius: 46% 46% 44% 44%; background: linear-gradient(160deg,#fffefd 8%,#fff5f2 100%); box-shadow: inset 0 -5rpx 10rpx rgba(246,177,192,.13); box-sizing: border-box; }
+.xiaoba-fringe { position: absolute; top: -7%; left: 36%; width: 28%; height: 24%; border-radius: 0 0 60% 60%; background: #f7a8bb; transform: rotate(-5deg); }
+.xiaoba-eye { position: absolute; top: 40%; width: 12%; height: 16%; border-radius: 50%; background: #5b4050; }
+.xiaoba-eye-light { position: absolute; top: 16%; left: 18%; width: 34%; height: 30%; border-radius: 50%; background: #fff; }
+.xiaoba-eye-left { left: 24%; transform: rotate(-4deg); }
+.xiaoba-eye-right { right: 24%; transform: rotate(4deg); }
+.xiaoba-blush { position: absolute; top: 61%; width: 18%; height: 10%; border-radius: 50%; background: rgba(247,168,187,.58); filter: blur(.5rpx); }
+.xiaoba-blush-left { left: 11%; }
+.xiaoba-blush-right { right: 11%; }
+.xiaoba-smile { position: absolute; left: 41%; top: 61%; width: 18%; height: 12%; border-bottom: 2rpx solid #8d596d; border-radius: 0 0 50% 50%; box-sizing: border-box; }
+.xiaoba-sparkle { position: absolute; z-index: 4; right: -2%; top: 3%; display: flex; align-items: center; justify-content: center; width: 27%; height: 27%; color: #e9ad55; font-size: 20rpx; font-weight: 900; text-shadow: 0 2rpx 3rpx rgba(255,255,255,.9); animation: xiaoba-mark-twinkle 2.2s ease-in-out infinite; }
+.xiaoba-mark-message .xiaoba-sparkle { font-size: 15rpx; }
+.xiaoba-online { position: absolute; z-index: 5; right: -3%; bottom: -2%; width: 18%; height: 18%; border: 3rpx solid #fff; border-radius: 50%; background: #72cf9a; box-shadow: 0 2rpx 6rpx rgba(66,154,105,.2); box-sizing: border-box; }
+@keyframes xiaoba-mark-twinkle { 0%,100% { opacity: .7; transform: scale(.85) rotate(-7deg); } 50% { opacity: 1; transform: scale(1.12) rotate(8deg); } }
+@media (prefers-reduced-motion: reduce) { .xiaoba-sparkle { animation: none; } }

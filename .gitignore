@@ -1,0 +1,25 @@
+node_modules/
+miniprogram/miniprogram_npm/
+miniprogram/config.local.json
+miniprogram/config.runtime.js
+project.config.json
+project.private.config.json
+.env
+.env.*
+!.env.example
+*.log
+.local/
+.local/private-patterns.txt
+.worktrees/
+output/
+coverage/
+dist/
+*.tmp
+*.bak
+*.backup
+# 迁移用的云数据库导出/导入文件，里面是真实用户数据，绝不进 Git
+migration/
+exports/
+backups/
+cloudfunctions/api/ai.secret.local.json
+cloudfunctions/api/notification.config.local.json

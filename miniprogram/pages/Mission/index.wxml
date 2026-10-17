@@ -1,0 +1,62 @@
+<wxs module="util" src="../util.wxs" />
+<view class="ux-page page-shell mission-page">
+  <page-heading title="胡巴家长们" subtitle="和你一起，把每一天变得更好 ♡" />
+  <view class="content-wrap">
+    <view class="hero-swiper mission-hero"><image src="{{appearance.mission}}" mode="aspectFill" class="hero-image" /></view>
+    <view class="search-card"><text class="search-icon-text">⌕</text><input class="search-input" placeholder="搜索任务" placeholder-class="search-placeholder" bindinput="onSearch" value="{{search}}" /><button wx:if="{{search}}" class="search-clear" bindtap="clearSearch" aria-label="清除搜索" hover-class="ux-pressed">×</button></view>
+    <feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取任务…" bind:retry="loadData" />
+    <view wx:if="{{loaded}}" class="list-help">左滑条目可确认完成、星标或删除</view>
+    <view class="mission-overview">
+      <view class="overview-copy"><view class="overview-eyebrow">TODAY'S LITTLE PLAN</view><view class="overview-title">把小事一件件完成</view><view class="overview-note">自己发起小任务，完成后请对方确认，积分记给你 ♡</view></view>
+      <view class="overview-stats"><view><text>📝</text><text>{{unfinishedMissions.length}}</text><text>待完成</text></view><view><text>🎉</text><text>{{finishedMissions.length}}</text><text>已完成</text></view></view>
+      <text class="overview-sparkle">✦</text>
+    </view>
+
+    <view class="mission-calendar">
+      <view class="calendar-header"><view><text class="calendar-kicker">OUR MONTHLY PLAN</text><view class="calendar-title">{{calendarTitle}}</view></view><view class="calendar-arrows"><view data-offset="-1" bindtap="changeMonth" aria-label="上个月" hover-class="ux-pressed" hover-stay-time="80">‹</view><view data-offset="1" bindtap="changeMonth" aria-label="下个月" hover-class="ux-pressed" hover-stay-time="80">›</view></view></view>
+      <view class="calendar-weekdays"><text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text><text>日</text></view>
+      <view class="calendar-grid"><view wx:for="{{calendarCells}}" wx:key="date" class="calendar-day {{item.inMonth ? '' : 'outside'}} {{calendarMode === 'day' && selectedDate === item.date ? 'selected' : ''}}" data-date="{{item.date}}" bindtap="selectCalendarDay" aria-label="{{item.date}}，{{item.count}}项任务" hover-class="ux-pressed" hover-stay-time="80"><text>{{item.day}}</text><view wx:if="{{item.count}}" class="calendar-dot"></view></view></view>
+      <view class="calendar-footer"><text>{{calendarMode === 'day' ? selectedDate + ' 的安排' : '点日期查看当天计划'}}</text><view class="all-task-chip {{calendarMode === 'all' ? 'active' : ''}}" bindtap="showAllMissions" hover-class="ux-pressed" hover-stay-time="80">全部任务</view></view>
+    </view>
+
+    <view class="section-block">
+      <view class="section-heading"><view class="heading-left"><text class="heading-icon">🧷</text><text>未完成</text><text class="count-badge">{{unfinishedMissions.length}}</text></view><text class="section-action">一起加油</text></view>
+      <view class="list-card" wx:if="{{unfinishedMissions.length > 0}}">
+        <view class="form-cell" wx:for="{{unfinishedMissions}}" wx:key="_id">
+          <mp-slideview buttons="{{slideButtons}}" data-index="{{index}}" ext-class="huba-actions" icon="{{false}}" disable="{{actionBusy}}" duration="{{220}}" bindbuttontap="slideButtonTapUpper">
+            <view class="list-row task-ticket task-tone-{{index % 3}}" data-index="{{index}}" bindtap="toDetailPageUpper" hover-class="ux-pressed" hover-stay-time="80">
+              <view class="task-pin">{{index % 2 ? '♡' : '✦'}}</view>
+              <view class="row-copy"><view class="task-owner">{{item.mine ? '我的小任务' : '对方的小任务'}}</view><view class="row-title">{{util.filterStr(item.title, 12)}}</view><view class="task-meta-line"><text class="task-credit">💰 {{util.filterStr(item.credit, 10)}} 积分</text><text>{{item.planDate ? '🗓️ 计划 ' + item.planDate : '发布 ' + util.cutStr(item.date, 10)}}</text></view></view>
+              <image class="row-mascot" wx:if="{{item.mine}}" mode="aspectFit" src="../../images/brand/mascot-a.png" />
+              <image class="row-mascot" wx:else mode="aspectFit" src="../../images/brand/mascot-b.png" />
+              <text wx:if="{{item.star}}" class="star-mark">★</text>
+            </view>
+          </mp-slideview>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-block">
+      <view class="section-heading"><view class="heading-left"><text class="heading-icon">🎀</text><text>已完成</text><text class="count-badge">{{finishedMissions.length}}</text></view><text class="section-action">珍藏记录</text></view>
+      <view class="list-card" wx:if="{{finishedMissions.length > 0}}">
+        <view class="form-cell" wx:for="{{finishedMissions}}" wx:key="_id">
+          <mp-slideview buttons="{{slideButtons}}" data-index="{{index}}" ext-class="huba-actions" icon="{{false}}" disable="{{actionBusy}}" duration="{{220}}" bindbuttontap="slideButtonTapLower">
+            <view class="list-row completed-row task-ticket task-tone-{{index % 3}}" data-index="{{index}}" bindtap="toDetailPageLower" hover-class="ux-pressed" hover-stay-time="80">
+              <view class="task-pin">✓</view>
+              <view class="row-copy"><view class="task-owner">完成纪念 · {{item.ownerName}}发布</view><view class="row-title">{{util.filterStr(item.title, 12)}}</view><view class="task-meta-line"><text class="task-credit">💰 {{util.filterStr(item.credit, 10)}} 积分</text><text>{{item.planDate ? '🗓️ 计划 ' + item.planDate : '发布 ' + util.cutStr(item.date, 10)}}</text></view></view>
+              <image class="row-mascot" wx:if="{{item.mine}}" mode="aspectFit" src="../../images/brand/mascot-a.png" />
+              <image class="row-mascot" wx:else mode="aspectFit" src="../../images/brand/mascot-b.png" />
+              <text wx:if="{{item.star}}" class="star-mark">★</text>
+            </view>
+          </mp-slideview>
+        </view>
+      </view>
+    </view>
+
+    <view class="soft-card empty-card" wx:if="{{!loading && !loadError && unfinishedMissions.length === 0 && finishedMissions.length === 0}}"><image class="empty-image" src="../../images/brand/empty-storage.png" mode="aspectFit" /><view class="empty-title">{{search ? '没有找到匹配的任务' : calendarMode === 'day' ? '这天还没有计划' : '还没有任务哦'}}</view><view class="empty-subtitle">{{calendarMode === 'day' ? '未安排日期的任务可在“全部任务”查看' : '一起写下今天想完成的小事吧 ♡'}}</view></view>
+  </view>
+</view>
+
+<view class="create-action-capsule" hover-class="create-action-active" role="button" aria-label="新增任务" bindtap="toAddPage"><view class="create-action-icon">＋</view><view class="create-action-copy"><text class="create-action-label">任务</text><text>给对方一份小期待</text></view></view>
+
+<xiaoba-orb />

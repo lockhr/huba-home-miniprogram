@@ -1,0 +1,20 @@
+<wxs module="util" src="../util.wxs" />
+<view class="ux-page subpage-shell">
+  <view class="subpage-hero item-memory-hero">
+    <image class="item-memory-backdrop" src="{{appearance.market}}" mode="aspectFill" />
+    <view class="item-memory-tint"></view>
+    <view class="item-memory-copy"><text>HUBA COLLECTION</text><view>收藏属于你们的<br/>小美好</view><text>把喜欢留在彼此身边 ♡</text></view>
+    <view class="item-memory-frame"><image class="item-memory-photo" src="../../images/brand/mascot-pair.png" mode="aspectFit" /><text>♡</text></view>
+    <text class="item-memory-star">✦</text>
+  </view>
+  <view class="detail-feedback"><feedback-state loading="{{loading}}" error="{{loadError}}" label="正在读取详情…" bind:retry="loadDetail" /></view>
+  <view wx:if="{{item}}" class="form-group detail-card">
+    <view class="form-cell"><view class="detail-label">📌 物品名称</view><view class="detail-value detail-highlight">{{item.title}}</view></view>
+    <view class="form-cell"><view class="detail-label">💡 获取途径</view><view class="detail-value">此物品由{{from}}上架，由{{to}}购买。</view></view>
+    <view class="form-cell"><view class="detail-label">💰 物品价值：<text class="detail-highlight">{{item.credit}}</text> 积分</view><progress percent="{{creditPercent}}" border-radius="8" font-size="8" duration="10" color="#ff6d9c" active stroke-width="9" /><view class="progress-caption">最高 {{maxCredit}} 积分</view></view>
+    <view class="form-cell"><view class="detail-label">📅 购买日期</view><view class="detail-value">{{dateStr}} · {{util.cutStr(timeStr, 8)}}</view></view>
+    <view class="form-cell"><view class="detail-label">📝 物品详情</view><view class="detail-value">{{item.desc || '还没有补充说明'}}</view></view>
+  </view>
+</view>
+
+<xiaoba-orb />

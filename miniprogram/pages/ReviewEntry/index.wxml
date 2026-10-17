@@ -1,0 +1,5 @@
+<view class="ux-page review-entry">
+  <image class="review-entry-mark" src="../../images/brand/mascot-pair.png" mode="aspectFit" />
+  <view class="review-entry-title">正在准备只读演示</view>
+  <view class="review-entry-note">演示内容不会保存，也不会读取真实用户数据</view>
+</view>

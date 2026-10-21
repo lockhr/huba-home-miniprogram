@@ -6,6 +6,8 @@
 
 本项目基于 [Rainbow Cats](https://github.com/UxxHans/Rainbow-Cats-Personal-WeChat-MiniProgram) 的 MIT 版本改造，保留上游版权声明，并以 MIT 许可证继续开源。
 
+“胡巴家长们”由 [lockhr](https://github.com/lockhr) 进行二次开发并维护。本仓库是该项目的公开源码仓库，不表示所有代码均为从零原创。项目来源、开发范围及展示时可采用的说明见 [项目来源与维护说明](docs/PROJECT_ORIGIN.md)。
+
 ## 主要能力
 
 - 微信身份首次设置、一次性邀请码与双人空间生命周期。
